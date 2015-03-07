@@ -3,7 +3,7 @@ var Game = {
 
     images: null,
     audio: null,
-    maps: null,
+    prefabs: null,
 
     map: null,
 
@@ -26,7 +26,7 @@ var Game = {
 
         this.images = new ImageLoader();
         this.audio = new AudioLoader();
-        this.maps = new MapLoader();
+        this.prefabs = new PrefabLoader();
 
         this.$game = $('#game');
     },

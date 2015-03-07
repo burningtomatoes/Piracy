@@ -1,49 +1,52 @@
-var MapLoader = Loader.extend({
+var PrefabLoader = Loader.extend({
     readCache: function (id, defaultValue) {
         var data = this._super(id, defaultValue);
 
-        if (data.isMap) {
-            // Clear all entities before returning maps from cache
+        if (data.isPrefab) {
+            // Clear all entities before returning prefabs from cache
             data.clear();
-            data.onLoadComplete();
+
+            if (data.onLoadComplete) {
+                data.onLoadComplete();
+            }
         }
 
         return data;
     },
 
     innerLoad: function (filename) {
-        var map = new Map();
+        var prefab = new Prefab();
 
-        var configureMap = function (data) {
+        var configurePrefab = function (data) {
             // Copy over data
-            map.data = data;
-            map.layers = data.layers;
+            prefab.data = data;
+            prefab.layers = data.layers;
 
-            // Configure basic map properties
-            map.widthTiles = data.width;
-            map.heightTiles = data.height;
-            map.widthPx = data.width * Settings.TileSize;
-            map.heightPx = data.height * Settings.TileSize;
+            // Configure basic prefab properties
+            prefab.widthTiles = data.width;
+            prefab.heightTiles = data.height;
+            prefab.widthPx = data.width * Settings.TileSize;
+            prefab.heightPx = data.height * Settings.TileSize;
 
-            var props = map.data.properties;
+            var props = prefab.data.properties;
 
             if (props.name) {
-                map.name = props.name;
+                prefab.name = props.name;
             }
 
             // Prepare tileset & tileset config
             var tilesetSrc = data.tilesets[0].image;
             tilesetSrc = tilesetSrc.replace('../images/', '');
-            map.tileset = Game.images.load(tilesetSrc);
-            map.tilesPerRow = data.tilesets[0].imagewidth / Settings.TileSize;
+            prefab.tileset = Game.images.load(tilesetSrc);
+            prefab.tilesPerRow = data.tilesets[0].imagewidth / Settings.TileSize;
 
-            // Prepare blockmap
-            map.blockedRects = [];
+            // Prepare blockprefab
+            prefab.blockedRects = [];
 
-            var layerCount = map.layers.length;
+            var layerCount = prefab.layers.length;
 
             for (var i = 0; i < layerCount; i++) {
-                var layer = map.layers[i];
+                var layer = prefab.layers[i];
 
                 if (layer.properties == null) {
                     layer.properties = { };
@@ -61,7 +64,7 @@ var MapLoader = Loader.extend({
 
                     x++;
 
-                    if (x >= map.widthTiles) {
+                    if (x >= prefab.widthTiles) {
                         y++;
                         x = 0;
                     }
@@ -81,22 +84,27 @@ var MapLoader = Loader.extend({
                     rect.right = rect.left + rect.width;
 
                     if (isBlocking) {
-                        map.blockedRects.push(rect);
+                        prefab.blockedRects.push(rect);
                     }
                 }
             }
         };
 
-        $.get('assets/maps/' + filename)
+        $.get('assets/prefabs/' + filename)
         .success(function(data) {
-            configureMap(data);
-            map.fullyLoaded = true;
-            map.onLoadComplete(true);
+            configurePrefab(data);
+            prefab.fullyLoaded = true;
+
+            if (prefab.onLoadComplete) {
+                prefab.onLoadComplete(true);
+            }
         })
         .error(function() {
-            map.onLoadComplete(false);
+            if (prefab.onLoadComplete) {
+                prefab.onLoadComplete(false);
+            }
         });
 
-        return map;
+        return prefab;
     }
 });

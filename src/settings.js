@@ -1,4 +1,5 @@
 var Settings = {
     TileSize: 32,
-    DebugSkipBootLogo: true
+    DebugSkipBootLogo: true,
+    drawCollisions: true
 };
