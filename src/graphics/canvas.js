@@ -29,6 +29,9 @@ var Canvas = {
     resize: function () {
         var $document = $(document);
 
+        this.$element.css('width', 0);
+        this.$element.css('height', 0);
+
         var w = $document.width();
         var h = $document.height();
 
