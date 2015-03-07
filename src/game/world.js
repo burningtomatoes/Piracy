@@ -1,11 +1,39 @@
 var World = {
     SEA_SIZE: 100,
+    CLOUD_SPEED: -0.05,
+
+    imgClouds: null,
+
+    cloudPosition: 0,
+
+    init: function () {
+        this.imgClouds = Game.images.load('clouds.png');
+    },
+
+    update: function () {
+        if (this.imgClouds != null) {
+            var maxCloudPos = this.imgClouds.width;
+
+            this.cloudPosition += this.CLOUD_SPEED;
+
+            console.log(this.cloudPosition);
+
+            if (this.cloudPosition <= -maxCloudPos) {
+                this.cloudPosition = 0;
+            }
+
+            if (this.cloudPosition >= maxCloudPos) {
+                this.cloudPosition = 0;
+            }
+        }
+
+    },
 
     draw: function (ctx) {
         this.drawSky(ctx);
+        this.drawClouds(ctx);
         this.drawSkyRadial(ctx);
         this.drawSea(ctx);
-        this.drawClouds(ctx);
         this.drawReflections(ctx);
     },
 
@@ -36,7 +64,12 @@ var World = {
     },
 
     drawClouds: function (ctx) {
-
+        if (this.imgClouds != null) {
+            var cloudOffest = this.cloudPosition;
+            ctx.drawImage(this.imgClouds, 0, 0, this.imgClouds.width, this.imgClouds.height, cloudOffest, 0, this.imgClouds.width, this.imgClouds.height);
+            ctx.drawImage(this.imgClouds, 0, 0, this.imgClouds.width, this.imgClouds.height, this.imgClouds.width + cloudOffest, 0, this.imgClouds.width, this.imgClouds.height);
+            ctx.drawImage(this.imgClouds, 0, 0, this.imgClouds.width, this.imgClouds.height, this.imgClouds.width * 2 + cloudOffest, 0, this.imgClouds.width, this.imgClouds.height);
+        }
     },
 
     drawReflections: function (ctx) {

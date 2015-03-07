@@ -41,6 +41,8 @@ var Game = {
     start: function (mapId) {
         this.clear();
 
+        World.init();
+
         BootLogo.show(function () {
             this.$game.stop().fadeIn('fast');
         }.bind(this));
@@ -60,9 +62,7 @@ var Game = {
         }
 
         Camera.update();
-
-        // ...
-
+        World.update();
         Keyboard.update();
     }
 };
