@@ -58,7 +58,11 @@ var World = {
     },
 
     getWaterLevel: function () {
-        return Canvas.canvas.height - this.SEA_SIZE + (Settings.TileSize / 2);
+        return this.getWaterRenderLevel() + (Settings.TileSize / 2);
+    },
+
+    getWaterRenderLevel: function () {
+        return Canvas.canvas.height - this.SEA_SIZE;
     },
 
     getEntityById: function (id) {
@@ -116,14 +120,14 @@ var World = {
         this.drawClouds(ctx);
         this.drawSkyRadial(ctx);
         this.drawSea(ctx);
-        this.drawEntities(ctx);
         this.drawReflections(ctx);
+        this.drawEntities(ctx);
     },
 
     drawSky: function (ctx) {
         var grd = ctx.createLinearGradient(0, 0, 0, Canvas.canvas.height - World.SEA_SIZE);
         grd.addColorStop(0, "#0094FF");
-        grd.addColorStop(1, "#fff");
+        grd.addColorStop(1, "#64A1D0");
 
         ctx.fillStyle = grd;
         ctx.fillRect(0, 0, Canvas.canvas.width, Canvas.canvas.height);
@@ -138,6 +142,7 @@ var World = {
     },
 
     drawSea: function (ctx) {
+        // 1 - Draw sea gradient
         var translateX = 0;
         var translateY = Camera.translateY(0);
 
@@ -151,6 +156,15 @@ var World = {
         ctx.fillRect(0, Canvas.canvas.height - World.SEA_SIZE, Canvas.canvas.width, World.SEA_SIZE);
 
         ctx.translate(-translateX, -translateY);
+
+        // 2 - Sea line
+        var posY = this.getWaterRenderLevel();
+
+        ctx.beginPath();
+        ctx.moveTo(0, posY);
+        ctx.lineTo(Canvas.canvas.width, posY);
+        ctx.strokeStyle = '#fff';
+        ctx.stroke();
     },
 
     drawClouds: function (ctx) {
