@@ -24,6 +24,13 @@ var World = {
         this.player = null;
 
         this.add(new Boat());
+
+        for (var i = 0; i < 10; i++) {
+            var c = new Character();
+            this.add(c);
+            c.posX = chance.integer({ min: 32, max: 900 });
+            c.posY = chance.integer({ min: 32, max: 100 });
+        }
     },
 
     add: function (entity) {

@@ -1,4 +1,7 @@
 var Boat = Entity.extend({
+    doesFloat: true,
+    affectedByGravity: true,
+
     init: function () {
         this._super();
 

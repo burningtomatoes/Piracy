@@ -7,21 +7,60 @@ var Entity = Class.extend({
 
     renderer: null,
 
+    doesFloat: true,
+    affectedByGravity: true,
+
     init: function (id) {
         this.id = id;
         this.renderer = null;
-        this.posX = 0;
-        this.posY = 0;
+        this.posX = 32;
+        this.posY = 32;
         this.velocityX = 0;
         this.velocityY = 0;
     },
 
+    getRect: function (overrideX, overrideY) {
+        var x = this.posX;
+        var y = this.posY;
+
+        if (overrideX != null) {
+            x = overrideX;
+        }
+
+        if (overrideY != null) {
+            y = overrideY;
+        }
+
+        var w = 32;
+        var h = 32;
+
+        var margin = 6;
+
+        var rect = {
+            left: x,
+            top: y + 6,
+            height: h - margin,
+            width: w - margin
+        };
+        rect.bottom = rect.top + rect.height;
+        rect.right = rect.left + rect.width;
+        return rect;
+    },
+
     isFloating: function () {
+        if (!this.doesFloat) {
+            return false;
+        }
+
         var bottomPosY = this.posY + this.getHeight();
         return bottomPosY >= World.getWaterLevel();
     },
 
     floatToWater: function() {
+        if (!this.doesFloat) {
+            return false;
+        }
+
         this.posY = World.getWaterLevel() - this.getHeight();
     },
 
@@ -62,6 +101,17 @@ var Entity = Class.extend({
     draw: function (ctx) {
         if (this.renderer && this.renderer.draw) {
             this.renderer.draw(ctx, Camera.translateX(this.posX), Camera.translateY(this.posY));
+        }
+
+        if (Settings.drawCollisions) {
+            var r = this.getRect();
+
+            // Debug boundary
+            ctx.beginPath();
+            ctx.rect(Camera.translateX(r.left), Camera.translateY(r.top), r.width, r.height);
+            ctx.strokeStyle = "#FFCCAA";
+            ctx.stroke();
+            ctx.closePath();
         }
     },
 

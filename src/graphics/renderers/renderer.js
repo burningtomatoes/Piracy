@@ -9,15 +9,15 @@ var Renderer = Class.extend({
         return this.entity.map;
     },
 
-    rect: function () {
-        return this.entity.rect();
+    rect: function (x, y) {
+        return this.entity.getRect(x, y);
     },
 
     update: function () {
         // (Optionally, for animations, etc) To be implemented by children
     },
 
-    draw: function (ctx) {
+    draw: function (ctx, posX, posY) {
         // To be implemented by children
     }
 });
