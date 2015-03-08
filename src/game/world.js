@@ -177,6 +177,28 @@ var World = {
     },
 
     drawReflections: function (ctx) {
+        ctx.save();
+        ctx.globalAlpha = 0.2;
 
+        for (var j = 0; j < this.entities.length; j++) {
+            var entity = this.entities[j];
+            entity.drawReflection(ctx);
+        }
+
+        ctx.restore();
+
+        var translateX = 0;
+        var translateY = Camera.translateY(0);
+
+        ctx.translate(translateX, translateY);
+
+        var grd = ctx.createLinearGradient(0, Canvas.canvas.height - World.SEA_SIZE, 0, Canvas.canvas.height);
+        grd.addColorStop(0, "rgba(0,148,255,0)");
+        grd.addColorStop(1, "rgba(0,0,0,0.2)");
+
+        ctx.fillStyle = grd;
+        ctx.fillRect(0, Canvas.canvas.height - World.SEA_SIZE, Canvas.canvas.width, World.SEA_SIZE);
+
+        ctx.translate(-translateX, -translateY);
     }
 };

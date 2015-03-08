@@ -63,5 +63,21 @@ var Entity = Class.extend({
         if (this.renderer && this.renderer.draw) {
             this.renderer.draw(ctx, Camera.translateX(this.posX), Camera.translateY(this.posY));
         }
+    },
+
+    drawReflection: function (ctx) {
+        var translateY = this.getHeight() + World.getWaterLevel() + World.SEA_SIZE + (Settings.TileSize * 1.5);
+
+        // Vertical flip, center translation so it appears in the right place
+        ctx.scale(1, -1);
+        ctx.translate(0, -translateY);
+
+        // Actually draw this shit
+        this.draw(ctx);
+
+        // Undo translations
+        ctx.scale(-1, 1);
+        ctx.translate(0, translateY);
+
     }
 });
