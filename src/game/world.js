@@ -30,6 +30,7 @@ var World = {
             this.add(c);
             c.posX = chance.integer({ min: 32, max: 900 });
             c.posY = chance.integer({ min: -100, max: 100 });
+            this.player = c;
         }
     },
 

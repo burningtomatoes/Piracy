@@ -15,6 +15,8 @@ var Entity = Class.extend({
     healthMax: 100,
     name: '???',
 
+    imgIndicator: null,
+
     init: function (id) {
         this.id = id;
         this.renderer = null;
@@ -23,6 +25,10 @@ var Entity = Class.extend({
         this.velocityX = 0;
         this.velocityY = 0;
         this.health = 0;
+    },
+
+    isPlayer: function () {
+        return World.player === this;
     },
 
     getRect: function (overrideX, overrideY) {
@@ -146,6 +152,14 @@ var Entity = Class.extend({
     drawOverlays: function (ctx) {
         if (this.hasHealthBar) {
             this.drawHealthBar(ctx);
+        }
+
+        if (this.isPlayer()) {
+            if (this.imgIndicator == null) {
+                this.imgIndicator = Game.images.load('captain.png');
+            } else {
+                ctx.drawImage(this.imgIndicator, 0, 0, this.imgIndicator.width, this.imgIndicator.height, this.posX + 6, this.posY - 25, this.imgIndicator.width, this.imgIndicator.height);
+            }
         }
     },
 
