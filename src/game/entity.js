@@ -25,6 +25,8 @@ var Entity = Class.extend({
 
     imgIndicator: null,
 
+    facingLeft: false,
+
     init: function (id) {
         this.id = id;
         this.renderer = null;
@@ -114,6 +116,12 @@ var Entity = Class.extend({
             this.velocityX = 0;
         }
 
+        if (this.velocityX > 0) {
+            this.facingLeft = false;
+        } else if (this.velocityX < 0) {
+            this.facingLeft = true;
+        }
+
         if (!this.canMoveDown()) {
             this.landed = true;
         }
@@ -162,6 +170,11 @@ var Entity = Class.extend({
 
         var worldAlpha = ctx.globalAlpha;
         ctx.globalAlpha = this.alpha - worldAlpha + 1.0;
+
+        if (this.facingLeft) {
+            ctx.scale(-1, 1);
+            ctx.translate(this.getWidth(), 0);
+        }
 
         if (ctx.globalAlpha > 0) {
             if (this.renderer && this.renderer.draw) {
@@ -219,8 +232,8 @@ var Entity = Class.extend({
         ctx.beginPath();
 
         var baseRect = {
-            x: Math.round(this.posX + 4),
-            y: Math.round(this.posY - 6),
+            x: Camera.translateX(this.posX + 4),
+            y: Camera.translateY(this.posY - 6),
             w: this.getWidth() - 12,
             h: 4
         };

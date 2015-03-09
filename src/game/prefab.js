@@ -110,8 +110,8 @@ var Prefab = Class.extend({
                 var srcY = fullRows * Settings.TileSize;
                 var srcX = (tid * Settings.TileSize) - (fullRows * this.tilesPerRow * Settings.TileSize);
 
-                var destX = Camera.translateX(x * Settings.TileSize);
-                var destY = Camera.translateY(y * Settings.TileSize);
+                var destX = x * Settings.TileSize;
+                var destY = y * Settings.TileSize;
 
                 ctx.drawImage(this.tileset, srcX, srcY, Settings.TileSize, Settings.TileSize, destX, destY, Settings.TileSize, Settings.TileSize);
 

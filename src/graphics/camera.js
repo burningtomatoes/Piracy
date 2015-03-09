@@ -14,11 +14,11 @@ var Camera = {
     rumbleDuration: 0,
 
     translateX: function(x) {
-        return Math.round(x + this.applyX);
+        return Math.round(x + this.applyX + this.rumbleOffset);
     },
 
     translateY: function(y) {
-        return Math.round(y + this.applyY);
+        return Math.round(y + this.applyY + this.rumbleOffset);
     },
 
     translate: function(x, y) {
@@ -43,21 +43,11 @@ var Camera = {
         return Canvas.canvas.height;
     },
 
-    centerToMap: function() {
-        this.x = this.getScreenWidth() / 2 - Game.map.widthPx / 2;
-        this.y = this.getScreenHeight() / 2 - Game.map.heightPx / 2;
-        this.xLocked = (this.getScreenWidth() > Game.map.widthPx);
-        this.yLocked = (this.getScreenHeight() > Game.map.heightPx);
-        this.trackingEntity = null;
-    },
-
     trackHard: false,
 
     followEntity: function(e, hard) {
         this.trackingEntity = e;
         this.trackHard = !!hard;
-        this.xLocked = (this.getScreenWidth() > Game.map.widthPx);
-        this.yLocked = (this.getScreenHeight() > Game.map.heightPx);
     },
 
     rumble: function(duration, intensity) {
@@ -83,17 +73,8 @@ var Camera = {
         }
 
         if (this.trackingEntity != null) {
-            if (!this.xLocked) {
-                var desiredX = this.getScreenWidth() / 2 - this.trackingEntity.posX - this.trackingEntity.width / 2;
-                var maxXSpace = Game.map.widthPx - this.getScreenWidth();
-                this.x = MathHelper.clamp(desiredX, -maxXSpace, 0);
-            }
-
-            if (!this.yLocked) {
-                var desiredY = this.getScreenHeight() / 2 - this.trackingEntity.posY - this.trackingEntity.height / 2;
-                var maxYSpace = Game.map.heightPx - this.getScreenHeight();
-                this.y = MathHelper.clamp(desiredY, -maxYSpace, 0);
-            }
+            this.x = this.getScreenWidth() / 2 - this.trackingEntity.posX - this.trackingEntity.width / 2;
+            this.y = this.getScreenHeight() / 2 - this.trackingEntity.posY - this.trackingEntity.height / 2;
         }
 
         if (this.trackHard) {
