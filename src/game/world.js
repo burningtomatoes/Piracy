@@ -10,7 +10,7 @@ var World = {
 
     cloudPosition: 0,
 
-    gravity: 0.1,
+    gravity: 0.2,
 
     init: function () {
         this.imgClouds = Game.images.load('clouds.png');

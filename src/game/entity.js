@@ -16,6 +16,13 @@ var Entity = Class.extend({
     healthMax: 100,
     name: '???',
 
+    movementSpeed: 2.5,
+    jumpPower: 5,
+
+    landed: true,
+    jumped: false,
+    doubleJumped: false,
+
     imgIndicator: null,
 
     init: function (id) {
@@ -105,6 +112,10 @@ var Entity = Class.extend({
 
         if ((this.velocityX < 0 && this.willCollideLeft()) || (this.velocityX > 0 && this.willCollideRight())) {
             this.velocityX = 0;
+        }
+
+        if (!this.canMoveDown()) {
+            this.landed = true;
         }
 
         this.posX += this.velocityX;
@@ -240,7 +251,7 @@ var Entity = Class.extend({
             return true;
         }
 
-        var projectedPosX = this.posX - this.movementSpeed;
+        var projectedPosX = this.posX - (this.movementSpeed * 2);
         var projectedRect = this.getRect(projectedPosX, null);
         return !World.anyCollisions(this, projectedRect);
     },
@@ -250,7 +261,7 @@ var Entity = Class.extend({
             return true;
         }
 
-        var projectedPosX = this.posX + this.movementSpeed;
+        var projectedPosX = this.posX + (this.movementSpeed * 2);
         var projectedRect = this.getRect(projectedPosX, null);
         return !World.anyCollisions(this, projectedRect);
     },
@@ -260,7 +271,7 @@ var Entity = Class.extend({
             return true;
         }
 
-        var projectedPosY = this.posY - this.movementSpeed;
+        var projectedPosY = this.posY - (this.movementSpeed * 2);
         var projectedRect = this.getRect(null, projectedPosY);
         return !World.anyCollisions(this, projectedRect);
     },
@@ -270,7 +281,7 @@ var Entity = Class.extend({
             return true;
         }
 
-        var projectedPosY = this.posY + this.movementSpeed;
+        var projectedPosY = this.posY + (this.movementSpeed * 2);
         var projectedRect = this.getRect(null, projectedPosY);
         return !World.anyCollisions(this, projectedRect);
     },

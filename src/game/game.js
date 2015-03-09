@@ -63,6 +63,7 @@ var Game = {
 
         Camera.update();
         World.update();
+        PlayerControls.update();
         Keyboard.update();
     }
 };
