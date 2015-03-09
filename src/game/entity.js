@@ -158,7 +158,7 @@ var Entity = Class.extend({
             if (this.imgIndicator == null) {
                 this.imgIndicator = Game.images.load('captain.png');
             } else {
-                ctx.drawImage(this.imgIndicator, 0, 0, this.imgIndicator.width, this.imgIndicator.height, this.posX + 6, this.posY - 25, this.imgIndicator.width, this.imgIndicator.height);
+                ctx.drawImage(this.imgIndicator, 0, 0, this.imgIndicator.width, this.imgIndicator.height, this.posX + 5, this.posY - 25, this.imgIndicator.width, this.imgIndicator.height);
             }
         }
     },
