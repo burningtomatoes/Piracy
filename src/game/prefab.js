@@ -40,11 +40,20 @@ var Prefab = Class.extend({
         return this.heightPx;
     },
 
-    isRectBlocked: function (ourRect) {
+    isRectBlocked: function (ourRect, adjustedX, adjustedY) {
         var blockedRectsLength = this.blockedRects.length;
 
         for (var i = 0; i < blockedRectsLength; i++) {
-            if (Utils.rectIntersects(ourRect, this.blockedRects[i])) {
+            var r = this.blockedRects[i];
+
+            var rectCopy = {
+                left:   r.left + adjustedX,
+                right:  r.right + adjustedX,
+                top:    r.top + adjustedY,
+                bottom: r.bottom + adjustedY
+            };
+
+            if (Utils.rectIntersects(ourRect, rectCopy)) {
                 return true;
             }
         }

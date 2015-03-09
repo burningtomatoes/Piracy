@@ -17,6 +17,10 @@
          "height":8,
          "name":"Boat - Blocking",
          "opacity":1,
+         "properties":
+            {
+             "blocked":"1"
+            },
          "type":"tilelayer",
          "visible":true,
          "width":23,

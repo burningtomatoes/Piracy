@@ -9,6 +9,7 @@ var Entity = Class.extend({
 
     doesFloat: true,
     affectedByGravity: true,
+    receivesCollision: true,
 
     init: function (id) {
         this.id = id;
@@ -32,13 +33,13 @@ var Entity = Class.extend({
         }
 
         var w = 32;
-        var h = 32;
+        var h = 43;
 
-        var margin = 6;
+        var margin = 12;
 
         var rect = {
-            left: x,
-            top: y + 6,
+            left: x + 4,
+            top: y,
             height: h - margin,
             width: w - margin
         };
@@ -86,6 +87,14 @@ var Entity = Class.extend({
             this.floatToWater();
         }
 
+        if ((this.velocityY < 0 && this.willCollideUp()) || (this.velocityY > 0 && this.willCollideDown())) {
+            this.velocityY = 0;
+        }
+
+        if ((this.velocityX < 0 && this.willCollideLeft()) || (this.velocityX > 0 && this.willCollideRight())) {
+            this.velocityX = 0;
+        }
+
         this.posX += this.velocityX;
         this.posY += this.velocityY;
 
@@ -116,18 +125,120 @@ var Entity = Class.extend({
     },
 
     drawReflection: function (ctx) {
-        var translateY = this.getHeight() + World.getWaterLevel() + World.SEA_SIZE + (Settings.TileSize * 1.5);
+        var translateY = Canvas.canvas.height + World.getWaterRenderLevel() - 67;
 
         // Vertical flip, center translation so it appears in the right place
+        ctx.save();
         ctx.scale(1, -1);
         ctx.translate(0, -translateY);
 
         // Actually draw this shit
         this.draw(ctx);
 
-        // Undo translations
-        ctx.scale(-1, 1);
-        ctx.translate(0, translateY);
+        ctx.restore();
+    },
 
+    canMoveLeft: function () {
+        if (!this.receivesCollision) {
+            return true;
+        }
+
+        var projectedPosX = this.posX - this.movementSpeed;
+        var projectedRect = this.getRect(projectedPosX, null);
+        return !World.anyCollisions(this, projectedRect);
+    },
+
+    canMoveRight: function () {
+        if (!this.receivesCollision) {
+            return true;
+        }
+
+        var projectedPosX = this.posX + this.movementSpeed;
+        var projectedRect = this.getRect(projectedPosX, null);
+        return !World.anyCollisions(this, projectedRect);
+    },
+
+    canMoveUp: function () {
+        if (!this.receivesCollision) {
+            return true;
+        }
+
+        var projectedPosY = this.posY - this.movementSpeed;
+        var projectedRect = this.getRect(null, projectedPosY);
+        return !World.anyCollisions(this, projectedRect);
+    },
+
+    canMoveDown: function () {
+        if (!this.receivesCollision) {
+            return true;
+        }
+
+        var projectedPosY = this.posY + this.movementSpeed;
+        var projectedRect = this.getRect(null, projectedPosY);
+        return !World.anyCollisions(this, projectedRect);
+    },
+
+    canMoveAnywhere: function () {
+        if (!this.receivesCollision) {
+            return true;
+        }
+
+        return (this.canMoveLeft() || this.canMoveDown() || this.canMoveUp() || this.canMoveRight());
+    },
+
+    willCollideLeft: function () {
+        if (!this.receivesCollision) {
+            return false;
+        }
+
+        if (this.velocityX >= 0) {
+            return false;
+        }
+
+        var projectedPosX = this.posX - this.velocityX;
+        var projectedRect = this.getRect(projectedPosX, null);
+        return World.anyCollisions(this, projectedRect);
+    },
+
+    willCollideRight: function () {
+        if (!this.receivesCollision) {
+            return false;
+        }
+
+        if (this.velocityX <= 0) {
+            return false;
+        }
+
+        var projectedPosX = this.posX + this.velocityX;
+        var projectedRect = this.getRect(projectedPosX, null);
+        return World.anyCollisions(this, projectedRect);
+    },
+
+    willCollideUp: function () {
+        if (!this.receivesCollision) {
+            return false;
+        }
+
+        if (this.velocityY >= 0) {
+            return false;
+        }
+
+        var projectedPosY = this.posY + this.velocityY;
+        var projectedRect = this.getRect(null, projectedPosY);
+        return World.anyCollisions(this, projectedRect);
+    },
+
+    willCollideDown: function () {
+        if (!this.receivesCollision) {
+            return false;
+        }
+
+        if (this.velocityY <= 0) {
+            return false;
+        }
+
+        var projectedPosY = this.posY + this.velocityY;
+        var projectedRect = this.getRect(null, projectedPosY);
+        return World.anyCollisions(this, projectedRect);
     }
 });

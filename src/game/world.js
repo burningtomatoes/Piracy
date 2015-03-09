@@ -29,7 +29,7 @@ var World = {
             var c = new Character();
             this.add(c);
             c.posX = chance.integer({ min: 32, max: 900 });
-            c.posY = chance.integer({ min: 32, max: 100 });
+            c.posY = chance.integer({ min: -100, max: 100 });
         }
     },
 
@@ -105,6 +105,30 @@ var World = {
             var entity = this.entities[j];
             entity.update();
         }
+    },
+
+    anyCollisions: function (ourEntity, ourRect) {
+        for (var i = 0; i < this.entities.length; i++) {
+            var entity = this.entities[i];
+
+            if (entity.renderer == null || entity === ourEntity) {
+                continue;
+            }
+
+            if (entity.renderer.isPrefab) {
+                if (entity.renderer.isRectBlocked(ourRect, entity.posX, entity.posY)) {
+                    return true;
+                }
+            } else {
+                var theirRect = entity.getRect();
+
+                if (Utils.rectIntersects(ourRect, theirRect)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     },
 
     processRemovals: function () {
