@@ -125,7 +125,7 @@ var Entity = Class.extend({
     },
 
     drawReflection: function (ctx) {
-        var translateY = Canvas.canvas.height + World.getWaterRenderLevel() - 67;
+        var translateY = Canvas.canvas.height + World.getWaterRenderLevel() - 68;
 
         // Vertical flip, center translation so it appears in the right place
         ctx.save();
