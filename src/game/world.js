@@ -112,7 +112,7 @@ var World = {
         for (var i = 0; i < this.entities.length; i++) {
             var entity = this.entities[i];
 
-            if (entity.renderer == null || entity === ourEntity) {
+            if (entity.renderer == null || entity === ourEntity || entity.dead) {
                 continue;
             }
 

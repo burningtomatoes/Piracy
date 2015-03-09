@@ -4,6 +4,7 @@ var Entity = Class.extend({
     posY: 0,
     velocityX: 0,
     velocityY: 0,
+    alpha: 1,
 
     renderer: null,
 
@@ -11,7 +12,7 @@ var Entity = Class.extend({
     affectedByGravity: true,
     receivesCollision: true,
 
-    health: 66,
+    health: 100,
     healthMax: 100,
     name: '???',
 
@@ -118,21 +119,57 @@ var Entity = Class.extend({
         }
     },
 
+    damage: function (amt) {
+        if (this.dead) {
+            return;
+        }
+
+        this.health -= amt;
+
+        if (this.health <= 0) {
+            this.die();
+        }
+    },
+
+    die: function () {
+        if (this.dead) {
+            return;
+        }
+
+        if (this.health > 0) {
+            this.damage(this.health);
+            return;
+        }
+
+        this.dead = true;
+    },
+
     draw: function (ctx) {
-        if (this.renderer && this.renderer.draw) {
-            this.renderer.draw(ctx, Camera.translateX(this.posX), Camera.translateY(this.posY));
+        if (this.alpha <= 0) {
+            return;
         }
 
-        if (Settings.drawCollisions) {
-            var r = this.getRect();
+        var worldAlpha = ctx.globalAlpha;
+        ctx.globalAlpha = this.alpha - worldAlpha + 1.0;
 
-            // Debug boundary
-            ctx.beginPath();
-            ctx.rect(Camera.translateX(r.left), Camera.translateY(r.top), r.width, r.height);
-            ctx.strokeStyle = "#FFCCAA";
-            ctx.stroke();
-            ctx.closePath();
+        if (ctx.globalAlpha > 0) {
+            if (this.renderer && this.renderer.draw) {
+                this.renderer.draw(ctx, Camera.translateX(this.posX), Camera.translateY(this.posY));
+            }
+
+            if (Settings.drawCollisions) {
+                var r = this.getRect();
+
+                // Debug boundary
+                ctx.beginPath();
+                ctx.rect(Camera.translateX(r.left), Camera.translateY(r.top), r.width, r.height);
+                ctx.strokeStyle = "#FFCCAA";
+                ctx.stroke();
+                ctx.closePath();
+            }
         }
+
+        ctx.globalAlpha = worldAlpha;
     },
 
     drawReflection: function (ctx) {
@@ -150,6 +187,10 @@ var Entity = Class.extend({
     },
 
     drawOverlays: function (ctx) {
+        if (this.dead) {
+            return;
+        }
+
         if (this.hasHealthBar) {
             this.drawHealthBar(ctx);
         }
