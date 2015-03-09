@@ -2,6 +2,9 @@ var Character = Entity.extend({
     doesFloat: true,
     affectedByGravity: true,
 
+    isCharacter: true,
+    hasHealthBar: true,
+
     init: function () {
         this.renderer = new CharacterRenderer
         (

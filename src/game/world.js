@@ -153,6 +153,7 @@ var World = {
         this.drawSea(ctx);
         this.drawReflections(ctx);
         this.drawEntities(ctx);
+        this.drawOverlays(ctx);
     },
 
     drawSky: function (ctx) {
@@ -218,6 +219,13 @@ var World = {
         for (var j = 0; j < this.entities.length; j++) {
             var entity = this.entities[j];
             entity.draw(ctx);
+        }
+    },
+
+    drawOverlays: function (ctx) {
+        for (var j = 0; j < this.entities.length; j++) {
+            var entity = this.entities[j];
+            entity.drawOverlays(ctx);
         }
     },
 

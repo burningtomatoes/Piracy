@@ -11,6 +11,10 @@ var Entity = Class.extend({
     affectedByGravity: true,
     receivesCollision: true,
 
+    health: 66,
+    healthMax: 100,
+    name: '???',
+
     init: function (id) {
         this.id = id;
         this.renderer = null;
@@ -18,6 +22,7 @@ var Entity = Class.extend({
         this.posY = 32;
         this.velocityX = 0;
         this.velocityY = 0;
+        this.health = 0;
     },
 
     getRect: function (overrideX, overrideY) {
@@ -136,6 +141,43 @@ var Entity = Class.extend({
         this.draw(ctx);
 
         ctx.restore();
+    },
+
+    drawOverlays: function (ctx) {
+        if (this.hasHealthBar) {
+            this.drawHealthBar(ctx);
+        }
+    },
+
+    drawHealthBar: function (ctx) {
+        ctx.beginPath();
+
+        var baseRect = {
+            x: Math.round(this.posX + 4),
+            y: Math.round(this.posY - 6),
+            w: this.getWidth() - 12,
+            h: 4
+        };
+
+        ctx.rect(baseRect.x, baseRect.y, baseRect.w, baseRect.h);
+
+        ctx.fillStyle = '#333';
+        ctx.fill();
+
+        ctx.strokeStyle = '#000';
+        ctx.stroke();
+
+        ctx.closePath();
+        ctx.beginPath();
+
+        var healthPercentage = this.health / this.healthMax;
+
+        ctx.rect(baseRect.x + 1, baseRect.y + 1, (baseRect.w - 2) * healthPercentage, baseRect.h - 2);
+
+        ctx.fillStyle = '#DF0101';
+        ctx.fill();
+
+        ctx.closePath();
     },
 
     canMoveLeft: function () {
