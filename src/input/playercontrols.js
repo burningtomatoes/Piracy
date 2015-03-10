@@ -17,7 +17,7 @@ var PlayerControls = {
         var keyMoveLeft     = Keyboard.isKeyDown(KeyCode.A) || Keyboard.isKeyDown(KeyCode.LEFT);
         var keyMoveRight    = Keyboard.isKeyDown(KeyCode.D) || Keyboard.isKeyDown(KeyCode.RIGHT);
 
-        if (keyMoveUp && p.canMoveUp() && (p.landed || (p.jumped && !p.doubleJumped))) {
+        if (keyMoveUp && p.canMoveUp() && p.landed) {
             p.velocityY -= p.jumpPower;
 
             if (p.velocityY <= -p.jumpPower) {
@@ -25,10 +25,6 @@ var PlayerControls = {
             }
 
             p.landed = false;
-
-            if (p.jumped) {
-                p.doubleJumped = true;
-            }
 
             AudioOut.playSfx('jump.wav', 0.75);
             p.jumped = true;
