@@ -30,8 +30,6 @@ var Particles = {
             particle.posX = config.srcX;
             particle.posY = config.srcY;
             World.add(particle);
-
-            console.log('add particle', particle);
         }
     }
 };
