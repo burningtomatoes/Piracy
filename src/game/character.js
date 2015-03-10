@@ -30,7 +30,17 @@ var Character = Entity.extend({
 
             if (this.isFloating()) {
                 this.drowning = true;
+
                 AudioOut.playSfx('splash.wav', 1);
+
+                Particles.emit({
+                    srcX: this.posX + (this.getWidth() / 2),
+                    srcY: this.posY + (this.getHeight() / 2),
+                    minAmount: 50,
+                    maxAmount: 100,
+                    color: '#fff',
+                    lifetime: 60
+                });
             }
         }
     },
