@@ -37,6 +37,7 @@ var Particles = {
 var Particle = Entity.extend({
     color: '#00ff00',
     size: 0,
+    reflective: false,
 
     init: function (color, size) {
         this.velocityX = chance.floating({min: -10, max: 10});

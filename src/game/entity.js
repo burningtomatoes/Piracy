@@ -30,6 +30,8 @@ var Entity = Class.extend({
     walkingOffset: 0,
     walkingAnimDir: 0,
 
+    reflective: true,
+
     init: function (id) {
         this.id = id;
         this.renderer = null;
@@ -240,6 +242,10 @@ var Entity = Class.extend({
     },
 
     drawReflection: function (ctx) {
+        if (!this.reflective) {
+            return;
+        }
+
         var translateY = Canvas.canvas.height + World.getWaterRenderLevel() - 68;
 
         // Vertical flip, center translation so it appears in the right place
