@@ -27,6 +27,9 @@ var Entity = Class.extend({
 
     facingLeft: false,
 
+    walkingOffset: 0,
+    walkingAnimDir: 0,
+
     init: function (id) {
         this.id = id;
         this.renderer = null;
@@ -34,7 +37,16 @@ var Entity = Class.extend({
         this.posY = 32;
         this.velocityX = 0;
         this.velocityY = 0;
-        this.health = 0;
+        this.health = 100;
+        this.healthMax = 100;
+    },
+
+    isMoving: function () {
+        return this.velocityX != 0 || this.velocityY != 0;
+    },
+
+    isWalking: function () {
+        return this.velocityX != 0;
     },
 
     isPlayer: function () {
@@ -133,6 +145,24 @@ var Entity = Class.extend({
             this.velocityY += World.gravity;
         }
 
+        if (this.isCharacter && this.isWalking()) {
+            if (this.walkingAnimDir == 0) {
+                this.walkingOffset += 1;
+
+                if (this.walkingOffset >= 6) {
+                    this.walkingAnimDir = 1;
+                }
+            } else if (this.walkingAnimDir == 1) {
+                this.walkingOffset -= 1;
+
+                if (this.walkingOffset <= -6) {
+                    this.walkingAnimDir = 0;
+                }
+            }
+        } else {
+            this.walkingOffset = 0;
+        }
+
         if (this.renderer && this.renderer.update) {
             this.renderer.update();
         }
@@ -178,6 +208,15 @@ var Entity = Class.extend({
             ctx.scale(-1, 1);
         } else {
             ctx.translate(Camera.translateX(this.posX) - 2, Camera.translateY(this.posY));
+        }
+
+        if (this.walkingOffset != 0) {
+            var centerX = this.getWidth() / 2;
+            var centerY = this.getHeight() / 2;
+
+            ctx.translate(centerX, centerY);
+            ctx.rotate(this.walkingOffset * (Math.PI / 180));
+            ctx.translate(-centerX, -centerY);
         }
 
         if (ctx.globalAlpha > 0) {
