@@ -27,6 +27,10 @@ var Character = Entity.extend({
             });
         }
 
+        if (this.isPlayer()) {
+            Camera.rumble(5, 2);
+        }
+
         this._super(d);
     },
 
