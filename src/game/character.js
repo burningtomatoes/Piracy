@@ -30,6 +30,7 @@ var Character = Entity.extend({
 
             if (this.isFloating()) {
                 this.drowning = true;
+                AudioOut.playSfx('splash.wav', 1);
             }
         }
     },
