@@ -12,6 +12,8 @@ var Game = {
 
     $game: null,
 
+    isGameOver: false,
+
     init: function () {
         if (this.initialized) {
             return;
@@ -36,6 +38,7 @@ var Game = {
 
         this.started = false;
         this.map = null;
+        this.isGameOver = false;
     },
 
     start: function (mapId) {
@@ -56,6 +59,11 @@ var Game = {
         World.draw(ctx);
     },
 
+    gameOver: function () {
+        $('#gameover').slideDown();
+        this.isGameOver = true;
+    },
+
     update: function () {
         if (!this.initialized) {
             return;
@@ -63,7 +71,15 @@ var Game = {
 
         Camera.update();
         World.update();
-        PlayerControls.update();
+
+        if (!this.isGameOver) {
+            PlayerControls.update();
+        } else if (Keyboard.wasKeyPressed(KeyCode.SPACE)) {
+            $('#gameover').hide();
+            Game.isGameOver = false;
+            Game.start();
+        }
+
         Keyboard.update();
     }
 };

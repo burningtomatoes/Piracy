@@ -77,5 +77,9 @@ var Character = Entity.extend({
         if (this.drowning) {
             World.remove(this);
         }
+
+        if (this.isPlayer() && !Game.isGameOver) {
+            Game.gameOver();
+        }
     }
 });
