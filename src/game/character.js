@@ -15,6 +15,21 @@ var Character = Entity.extend({
 
     drowning: false,
 
+    damage: function (d) {
+        if (!this.drowning && !this.dead) {
+            Particles.emit({
+                srcX: this.posX + (this.getWidth() / 2),
+                srcY: this.posY + (this.getHeight() / 2),
+                minAmount: 1,
+                maxAmount: d,
+                color: '#ff0000',
+                lifetime: 60
+            });
+        }
+
+        this._super(d);
+    },
+
     update: function () {
         if (this.drowning) {
             this.damage(2);
