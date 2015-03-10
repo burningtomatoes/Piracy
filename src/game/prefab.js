@@ -62,9 +62,7 @@ var Prefab = Class.extend({
     },
 
     draw: function (ctx, posX, posY) {
-        ctx.translate(posX, posY);
         this.drawBackground(ctx);
-        ctx.translate(-posX, -posY);
     },
 
     drawBackground: function (ctx) {

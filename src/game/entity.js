@@ -168,17 +168,21 @@ var Entity = Class.extend({
             return;
         }
 
+        ctx.save();
+
         var worldAlpha = ctx.globalAlpha;
         ctx.globalAlpha = this.alpha - worldAlpha + 1.0;
 
         if (this.facingLeft) {
+            ctx.translate(Camera.translateX(this.posX + this.getWidth()) - 1, Camera.translateY(this.posY));
             ctx.scale(-1, 1);
-            ctx.translate(this.getWidth(), 0);
+        } else {
+            ctx.translate(Camera.translateX(this.posX) - 2, Camera.translateY(this.posY));
         }
 
         if (ctx.globalAlpha > 0) {
             if (this.renderer && this.renderer.draw) {
-                this.renderer.draw(ctx, Camera.translateX(this.posX), Camera.translateY(this.posY));
+                this.renderer.draw(ctx, 0, 0);
             }
 
             if (Settings.drawCollisions) {
@@ -186,14 +190,14 @@ var Entity = Class.extend({
 
                 // Debug boundary
                 ctx.beginPath();
-                ctx.rect(Camera.translateX(r.left), Camera.translateY(r.top), r.width, r.height);
+                ctx.rect(r.left, r.top, r.width, r.height);
                 ctx.strokeStyle = "#FFCCAA";
                 ctx.stroke();
                 ctx.closePath();
             }
         }
 
-        ctx.globalAlpha = worldAlpha;
+        ctx.restore();
     },
 
     drawReflection: function (ctx) {
