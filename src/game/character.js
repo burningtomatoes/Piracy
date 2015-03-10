@@ -29,6 +29,13 @@ var Character = Entity.extend({
 
         if (this.isPlayer()) {
             Camera.rumble(5, 2);
+            if (!this.drowning) {
+                AudioOut.playSfx('pain_big.wav', 0.75);
+            }
+        } else {
+            if (!this.drowning) {
+                AudioOut.playSfx('pain_small.wav', 0.5);
+            }
         }
 
         this._super(d);
