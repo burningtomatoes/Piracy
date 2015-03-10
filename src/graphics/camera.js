@@ -52,7 +52,6 @@ var Camera = {
 
     rumble: function(duration, intensity) {
         this.isRumbling = true;
-        this.rumbleOffset = 0;
         this.rumbleDuration = duration;
         this.rumbleIntensity = intensity;
     },
