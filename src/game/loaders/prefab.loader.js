@@ -3,9 +3,6 @@ var PrefabLoader = Loader.extend({
         var data = this._super(id, defaultValue);
 
         if (data.isPrefab) {
-            // Clear all entities before returning prefabs from cache
-            data.clear();
-
             if (data.onLoadComplete) {
                 data.onLoadComplete();
             }
