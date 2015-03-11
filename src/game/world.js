@@ -1,6 +1,6 @@
 var World = {
     SEA_SIZE: 100,
-    CLOUD_SPEED: -0.05,
+    CLOUD_SPEED: -0.5,
 
     imgClouds: null,
 
