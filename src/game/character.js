@@ -96,6 +96,16 @@ var Character = Entity.extend({
         this.isAttacking = true;
         this.attackCooldown = 10;
         this.attackingAnimation = 0;
+
+        var entities = World.getCharactersInRect(this.getAttackRect(), this);
+
+        for (var i = 0; i < entities.length; i++) {
+            var entity = entities[i];
+            entity.damage(chance.integer({
+                min: this.weaponDamage - 5,
+                max: this.weaponDamage + 5
+            }));
+        }
     },
 
     update: function () {
