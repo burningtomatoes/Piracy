@@ -106,6 +106,19 @@ var World = {
             var entity = this.entities[j];
             entity.update();
         }
+
+        // Randomly "dust" or wind stuff flying about. Idk, makes it look like we're moving.
+        if (chance.bool({likelihood: 5})) {
+            Particles.emit({
+                srcX: Canvas.canvas.width,
+                srcY: chance.integer({ min: 0, max: Canvas.canvas.height }),
+                color: 'rgba(255, 255, 255, 0.15)',
+                intensity: 1,
+                gravity: false,
+                minAmount: 1,
+                maxAmount: 1
+            });
+        }
     },
 
     anyCollisions: function (ourEntity, ourRect) {
