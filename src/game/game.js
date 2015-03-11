@@ -14,6 +14,8 @@ var Game = {
 
     isGameOver: false,
 
+    goldPieces: 0,
+
     init: function () {
         if (this.initialized) {
             return;
@@ -39,6 +41,9 @@ var Game = {
         this.started = false;
         this.map = null;
         this.isGameOver = false;
+        this.goldPieces = 0;
+
+        this.syncHud();
     },
 
     start: function (mapId) {
@@ -49,6 +54,25 @@ var Game = {
         BootLogo.show(function () {
             this.$game.stop().fadeIn('fast');
         }.bind(this));
+    },
+
+    addGold: function (amt) {
+        if (amt == 0) {
+            return;
+        }
+
+        if (amt > 0) {
+            AudioOut.playSfx('coin_pickup.wav', 1.0);
+        }
+
+        this.goldPieces += amt;
+        this.syncHud();
+    },
+
+    syncHud: function () {
+        var $hud = $('#hud');
+        var $goldInciatro = $hud.find('.gold span');
+        $goldInciatro.text(this.goldPieces + 'G');
     },
 
     draw: function (ctx) {

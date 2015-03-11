@@ -1,9 +1,13 @@
 PIRACY
 Copyright (c) 2015, Roy de Jong
 
+http://www.burningtomato.com
+hello@burningtomato.com
+
 Game design & development:
+    a Burning Tomato game
     by Roy de Jong
-    http://www.burningtomato.com
+    presented to you in Glorious HTML5
     License: MIT
 
 Pixelmix font:
@@ -16,6 +20,10 @@ Splash SFX:
     http://freesound.org/people/victorcenusa/sounds/22865/
     License: Creative Commons BY 3.0
 
+Additional audio assets were created using Bfxr. Check it out, because it's awesome.
+
 Uses the Simple JavaScript Inheritance (Inherit.js) library by John Resig, MIT licensed.
 
 Uses the Chance.js library by Victor Quinn, MIT licensed.
+
+Thank you for checking this game out!
