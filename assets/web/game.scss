@@ -179,6 +179,18 @@ button.form-control {
   z-index: 1000;
   left: 15px;
   top: 15px;
+  color: #fff;
+  text-shadow: 1px 1px 1px #000, -1px -1px 1px #888;
+
+  .gold {
+    img {
+      display: block;
+      float: left;
+      margin-right: 10px;
+    }
+
+    line-height: 32px;
+  }
 
   .health {
     background: rgba(0, 0, 0, 0.5);
