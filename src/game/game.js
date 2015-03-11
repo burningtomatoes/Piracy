@@ -101,7 +101,7 @@ var Game = {
         } else if (Keyboard.wasKeyPressed(KeyCode.SPACE)) {
             $('#gameover').hide();
             Game.isGameOver = false;
-            Game.start();
+            location.reload();
         }
 
         Keyboard.update();
