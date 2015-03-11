@@ -53,6 +53,10 @@ var Character = Entity.extend({
         this._super(d);
     },
 
+    aiTimer: 0,
+    aiMoving: false,
+    aiMovingTime: 0,
+
     update: function () {
         if (this.drowning) {
             this.damage(2);
@@ -78,6 +82,48 @@ var Character = Entity.extend({
                     maxAmount: 100,
                     color: '#fff',
                     lifetime: 60
+                });
+            }
+        }
+
+        if (!this.isPlayer()) {
+            // Basic ""AI"" movement stuff (lol jk just random movement)
+            if (!this.landed) {
+                this.aiMoving = false;
+            }
+
+            if (this.aiMoving && this.aiMovingTime > 0) {
+                this.aiMovingTime--;
+
+                this.velocityX = this.facingLeft ? -this.movementSpeed : this.movementSpeed;
+            } else {
+                this.velocityX = 0;
+            }
+
+            if (this.aiTimer > 0) {
+                this.aiTimer--;
+            } else {
+                // Random chance: turn around
+                if (chance.bool()) {
+                    this.facingLeft = !this.facingLeft;
+                }
+
+                // Random chance: start or stop walking
+                if (chance.bool()) {
+                    this.aiMoving = chance.bool();
+
+                    if (this.aiMoving) {
+                        this.aiMovingTime = chance.integer({
+                            min: 60,
+                            max: 600
+                        });
+                    }
+                }
+
+                // Delay our next thought a bit
+                this.aiTimer = chance.integer({
+                    min: 60,
+                    max: 600
                 });
             }
         }
