@@ -3,9 +3,7 @@ var PrefabLoader = Loader.extend({
         var data = this._super(id, defaultValue);
 
         if (data.isPrefab) {
-            if (data.onLoadComplete) {
-                data.onLoadComplete();
-            }
+            data.onLoadComplete();
         }
 
         return data;
@@ -93,12 +91,12 @@ var PrefabLoader = Loader.extend({
             prefab.fullyLoaded = true;
 
             if (prefab.onLoadComplete) {
-                prefab.onLoadComplete(true);
+                prefab.onLoadComplete();
             }
         })
         .error(function() {
             if (prefab.onLoadComplete) {
-                prefab.onLoadComplete(false);
+                prefab.onLoadComplete();
             }
         });
 

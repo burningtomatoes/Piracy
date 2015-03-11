@@ -7,10 +7,10 @@ var Boat = Entity.extend({
         this._super();
 
         this.renderer = Game.prefabs.load('cargo_ship_1.json');
-        this.renderer.onLoadComplete = function () {
+        this.renderer.onLoadComplete(function () {
             this.floatToWater();
             this.generateCrew();
-        }.bind(this);
+        }.bind(this));
 
         this.crew = [];
     },

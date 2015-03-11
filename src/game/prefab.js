@@ -3,7 +3,6 @@ var Prefab = Class.extend({
 
     id: null,
 
-    onLoadComplete: null,
     fullyLoaded: false,
 
     data: { },
@@ -19,6 +18,25 @@ var Prefab = Class.extend({
 
     blockedRects: [],
 
+    _onLoadComplete: null,
+
+    onLoadComplete: function (fn) {
+        if (fn && fn != null) {
+            // Set mode
+            this._onLoadComplete = fn;
+
+            // Already fully loaded? trigger now
+            if (this.fullyLoaded) {
+                this.onLoadComplete();
+            }
+        } else {
+            // Trigger mode
+            if (this._onLoadComplete != null) {
+                this._onLoadComplete();
+            }
+        }
+    },
+
     init: function (id) {
         this.id = id;
         this.data = { };
@@ -28,7 +46,6 @@ var Prefab = Class.extend({
         this.widthPx = 0;
         this.heightPx = 0;
         this.tilesPerRow = 0;
-        this.onLoadComplete = null;
         this.fullyLoaded = false;
     },
 
