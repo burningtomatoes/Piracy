@@ -78,6 +78,7 @@ var Boat = Entity.extend({
 
             if (i === 0 && this.isPlayerBoat()) {
                 World.player = pirateMatey;
+                pirateMatey.equipWeapon('sword_gold', 25);
             }
 
             World.add(pirateMatey);

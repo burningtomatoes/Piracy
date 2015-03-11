@@ -43,7 +43,7 @@ var Character = Entity.extend({
             chance.integer({ min: 1, max: 6 })
         );
 
-        this.equipWeapon('sword_basic', 10);
+        this.equipWeapon('sword_basic', 15);
     },
 
     equipWeapon: function (id, damage) {
