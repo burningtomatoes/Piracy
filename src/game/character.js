@@ -94,7 +94,7 @@ var Character = Entity.extend({
         }
 
         this.isAttacking = true;
-        this.attackCooldown = 30;
+        this.attackCooldown = 10;
         this.attackingAnimation = 0;
     },
 

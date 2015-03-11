@@ -12,6 +12,13 @@ var PlayerControls = {
 
         var didChange = false;
 
+        // ATK ///////////////////////////////////////////////////////////////////////////////////////////////////////
+        var keyAttack = Keyboard.wasKeyPressed(KeyCode.SPACE);
+
+        if (keyAttack) {
+            p.attack();
+        }
+
         // MOVE //////////////////////////////////////////////////////////////////////////////////////////////////////
         var keyMoveUp       = Keyboard.wasKeyPressed(KeyCode.W) || Keyboard.wasKeyPressed(KeyCode.UP);
         var keyMoveLeft     = Keyboard.isKeyDown(KeyCode.A) || Keyboard.isKeyDown(KeyCode.LEFT);
