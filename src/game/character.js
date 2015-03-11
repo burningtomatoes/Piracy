@@ -114,9 +114,9 @@ var Character = Entity.extend({
         }
 
         if (this.isAttacking) {
-            this.attackingAnimation += 2;
+            this.attackingAnimation += 4;
 
-            if (this.attackingAnimation >= 30) {
+            if (this.attackingAnimation >= 40) {
                 this.attackingAnimation = 0;
                 this.isAttacking = false;
             }
