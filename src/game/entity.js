@@ -32,6 +32,9 @@ var Entity = Class.extend({
 
     reflective: true,
 
+    sayText: '',
+    sayTimer: 0,
+
     init: function (id) {
         this.id = id;
         this.renderer = null;
@@ -41,6 +44,11 @@ var Entity = Class.extend({
         this.velocityY = 0;
         this.health = 100;
         this.healthMax = 100;
+    },
+
+    say: function (text) {
+        this.sayText = text;
+        this.sayTimer = text.length * 30;
     },
 
     isMoving: function () {
@@ -117,6 +125,10 @@ var Entity = Class.extend({
     },
 
     update: function () {
+        if (this.sayTimer > 0) {
+            this.sayTimer--;
+        }
+
         if (this.velocityY > 0 && this.isFloating()) {
             this.velocityY = 0;
             this.floatToWater();
@@ -191,6 +203,8 @@ var Entity = Class.extend({
         }
 
         this.dead = true;
+
+        this.velocityX = 0;
     },
 
     draw: function (ctx) {
@@ -272,6 +286,21 @@ var Entity = Class.extend({
             } else {
                 ctx.drawImage(this.imgIndicator, 0, 0, this.imgIndicator.width, this.imgIndicator.height, this.posX + 5, this.posY - 25, this.imgIndicator.width, this.imgIndicator.height);
             }
+        }
+
+        if (this.sayTimer > 0) {
+            ctx.font = "6pt Pixelmix";
+
+            var textWidth = ctx.measureText(this.sayText).width;
+
+            var textX = Math.round(this.posX + ((this.getWidth() / 2) - (textWidth / 2)));
+            var textY = this.posY - 10;
+
+            ctx.fillStyle = '#000';
+            ctx.fillText(this.sayText, textX - 1, textY - 1);
+            ctx.fillText(this.sayText, textX + 1, textY + 1);
+            ctx.fillStyle = '#fff';
+            ctx.fillText(this.sayText, textX, textY);
         }
     },
 

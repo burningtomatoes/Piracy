@@ -9,6 +9,33 @@ var Character = Entity.extend({
     imgWeapon: null,
     weaponDamage: 0,
 
+    randomSpeech: [
+        "Arr!",
+        "Bloody cold out here!",
+        "Let's plunder some booty!",
+        "What do you do with a drunken sailor!?",
+        '"Leave her, Johnny, leave her!"',
+        'I hate to sail on this rotten tub.',
+        'Haul away your anchor!',
+        "O, I got a sister, she's nine feet tall!",
+        "Please tell me, what is this sailboat's name?",
+        "Whiskey, Johnny!",
+        "If ye growl too hard yer head they'll bust!",
+        "Ranzo, Ranzo, weigh heigh!",
+        "Timme, hey-rig-a-jig an' a ha-ha!",
+        "When the wind blows, we're all together, boys!",
+        "Why can't ye be so handy-o!",
+        "Handy, me boys, so handy!",
+        "Help me, Bob, I'm bully in the alley!",
+        "O, my name was Captain Kidd!",
+        "Oh, Nancy Dawson, Hi-oh!",
+        "What will we do with a drunken sailor?",
+        "Put 'em in the scuppers with a hose pipe on him!",
+        "Put him in the brig until he's sober!",
+        "Early in the morning!",
+        "..."
+    ],
+
     init: function () {
         this.renderer = new CharacterRenderer(
             this,
@@ -86,7 +113,7 @@ var Character = Entity.extend({
             }
         }
 
-        if (!this.isPlayer()) {
+        if (!this.isPlayer() && !this.dead) {
             // Basic ""AI"" movement stuff (lol jk just random movement)
             if (!this.landed) {
                 this.aiMoving = false;
@@ -118,6 +145,11 @@ var Character = Entity.extend({
                             max: 600
                         });
                     }
+                }
+
+                // Random speech, sometimes
+                if (chance.bool({ likelihood: 25 }) && this.sayTimer == 0 && this.landed) {
+                    this.say(chance.pick(this.randomSpeech));
                 }
 
                 // Delay our next thought a bit
