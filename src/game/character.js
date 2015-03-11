@@ -89,6 +89,7 @@ var Character = Entity.extend({
             this.damage(2);
             this.renderer.scale *= 0.975;
             this.posY += 0.5;
+            this.posX += World.CLOUD_SPEED * 5;
 
             if (this.alpha > 0) {
                 this.alpha -= 0.025;

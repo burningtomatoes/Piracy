@@ -57,6 +57,8 @@ var Particle = Entity.extend({
         this.posX += this.velocityX;
         this.posY += this.velocityY;
 
+        this.posX += World.CLOUD_SPEED * 5;
+
         if (this.velocityY >= Canvas.canvas.height + this.size) {
             World.remove(this);
             return;
