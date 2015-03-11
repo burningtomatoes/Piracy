@@ -75,9 +75,11 @@ var Boat = Entity.extend({
             var pirateMatey = new Character();
             pirateMatey.posX = spawn.left + this.posX;
             pirateMatey.posY = spawn.top + this.posY;
+            pirateMatey.boat = this;
 
             if (i === 0 && this.isPlayerBoat()) {
                 World.player = pirateMatey;
+
                 pirateMatey.equipWeapon('sword_gold', 25);
             }
 

@@ -37,6 +37,8 @@ var Entity = Class.extend({
 
     damageFlashTimer: 0,
 
+    boat: null,
+
     init: function (id) {
         this.id = id;
         this.renderer = null;
@@ -63,6 +65,14 @@ var Entity = Class.extend({
 
     isPlayer: function () {
         return World.player === this;
+    },
+
+    isEnemy: function () {
+        return this.isCharacter && this.boat != World.playerBoat;
+    },
+
+    isFriendly: function () {
+        return this.isCharacter && this.boat == World.playerBoat;
     },
 
     getRect: function (overrideX, overrideY) {
@@ -329,9 +339,9 @@ var Entity = Class.extend({
             this.drawHealthBar(ctx);
         }
 
-        if (this.isPlayer()) {
+        if (this.isPlayer() || this.isEnemy()) {
             if (this.imgIndicator == null) {
-                this.imgIndicator = Game.images.load('captain.png');
+                this.imgIndicator = Game.images.load(this.isPlayer() ? 'captain.png' : 'enemy.png');
             } else {
                 ctx.drawImage(this.imgIndicator, 0, 0, this.imgIndicator.width, this.imgIndicator.height, this.posX + 5, this.posY - 25, this.imgIndicator.width, this.imgIndicator.height);
             }
