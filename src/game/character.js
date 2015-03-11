@@ -5,12 +5,24 @@ var Character = Entity.extend({
     isCharacter: true,
     hasHealthBar: true,
 
+    hasWeapon: false,
+    imgWeapon: null,
+    weaponDamage: 0,
+
     init: function () {
-        this.renderer = new CharacterRenderer
-        (
+        this.renderer = new CharacterRenderer(
+            this,
             chance.integer({ min: 1, max: 7 }),
             chance.integer({ min: 1, max: 6 })
-        )
+        );
+
+        this.equipWeapon('sword_basic', 10);
+    },
+
+    equipWeapon: function (id, damage) {
+        this.imgWeapon = Game.images.load(id + '.png');
+        this.weaponDamage = damage;
+        this.hasWeapon = true;
     },
 
     drowning: false,
