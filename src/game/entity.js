@@ -93,6 +93,14 @@ var Entity = Class.extend({
         return rect;
     },
 
+    getAttackRect: function () {
+        var rect = this.getRect();
+        rect.left += this.facingLeft ? -this.getWidth() / 2 : +this.getWidth() / 2;
+        rect.bottom = rect.top + rect.height;
+        rect.right = rect.left + rect.width;
+        return rect;
+    },
+
     isFloating: function () {
         if (!this.doesFloat) {
             return false;
@@ -245,20 +253,29 @@ var Entity = Class.extend({
             if (this.renderer && this.renderer.draw) {
                 this.renderer.draw(ctx, 0, 0);
             }
-
-            if (Settings.drawCollisions) {
-                var r = this.getRect();
-
-                // Debug boundary
-                ctx.beginPath();
-                ctx.rect(r.left, r.top, r.width, r.height);
-                ctx.strokeStyle = "#FFCCAA";
-                ctx.stroke();
-                ctx.closePath();
-            }
         }
 
         ctx.restore();
+
+        if (Settings.drawCollisions) {
+            var r = this.getRect();
+
+            // Debug boundary
+            ctx.beginPath();
+            ctx.rect(r.left, r.top, r.width, r.height);
+            ctx.strokeStyle = "#FFCCAA";
+            ctx.stroke();
+            ctx.closePath();
+
+            var r = this.getAttackRect();
+
+            // Debug boundary
+            ctx.beginPath();
+            ctx.rect(r.left, r.top, r.width, r.height);
+            ctx.strokeStyle = "#FF0000";
+            ctx.stroke();
+            ctx.closePath();
+        }
     },
 
     drawReflection: function (ctx) {
