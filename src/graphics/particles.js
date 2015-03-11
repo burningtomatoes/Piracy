@@ -8,7 +8,9 @@ var Particles = {
             color: '#ff0000',
             lifetime: 60,
             minSize: 2,
-            maxSize: 5
+            maxSize: 5,
+            intensity: 10,
+            gravity: true
         };
 
         for (var prop in usrConfig) {
@@ -26,7 +28,7 @@ var Particles = {
                 max: config.maxSize
             });
 
-            var particle = new Particle(config.color, size);
+            var particle = new Particle(config.color, size, config.intensity, config.gravity);
             particle.posX = config.srcX;
             particle.posY = config.srcY;
             World.add(particle);
@@ -38,13 +40,15 @@ var Particle = Entity.extend({
     color: '#00ff00',
     size: 0,
     reflective: false,
+    gravity: true,
 
-    init: function (color, size) {
-        this.velocityX = chance.floating({min: -10, max: 10});
-        this.velocityY = chance.floating({min: -10, max: 10});
+    init: function (color, size, intensity, gravity) {
+        this.velocityX = chance.floating({min: -intensity, max: intensity});
+        this.velocityY = chance.floating({min: -intensity, max: intensity});
         this.alpha = 1.0;
         this.color = color;
         this.size = size;
+        this.gravity = gravity;
     },
 
     getWidth: function () { return this.size; },
@@ -52,14 +56,17 @@ var Particle = Entity.extend({
 
     update: function () {
         this.velocityX *= 0.9;
-        this.velocityY += World.gravity * 2;
+
+        if (this.gravity) {
+            this.velocityY += World.gravity * 2;
+        }
 
         this.posX += this.velocityX;
         this.posY += this.velocityY;
 
         this.posX += World.CLOUD_SPEED * 5;
 
-        if (this.velocityY >= Canvas.canvas.height + this.size) {
+        if (this.posX <= -this.size || this.posY >= Canvas.canvas.height + this.size) {
             World.remove(this);
             return;
         }
