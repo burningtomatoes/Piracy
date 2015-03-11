@@ -135,6 +135,15 @@ var Entity = Class.extend({
     },
 
     update: function () {
+        if (this.dead) {
+            this.alpha -= 0.05;
+
+            if (this.alpha <= 0) {
+                World.remove(this);
+                return;
+            }
+        }
+
         if (this.sayTimer > 0) {
             this.sayTimer--;
         }
