@@ -297,6 +297,21 @@ var Entity = Class.extend({
     },
 
     drawOverlays: function (ctx) {
+        if (this.sayTimer > 0) {
+            ctx.font = "6pt Pixelmix";
+
+            var textWidth = ctx.measureText(this.sayText).width;
+
+            var textX = Math.round(this.posX + ((this.getWidth() / 2) - (textWidth / 2)));
+            var textY = this.posY - 10;
+
+            ctx.fillStyle = '#000';
+            ctx.fillText(this.sayText, textX - 1, textY - 1);
+            ctx.fillText(this.sayText, textX + 1, textY + 1);
+            ctx.fillStyle = '#fff';
+            ctx.fillText(this.sayText, textX, textY);
+        }
+
         if (this.dead) {
             return;
         }
@@ -311,21 +326,6 @@ var Entity = Class.extend({
             } else {
                 ctx.drawImage(this.imgIndicator, 0, 0, this.imgIndicator.width, this.imgIndicator.height, this.posX + 5, this.posY - 25, this.imgIndicator.width, this.imgIndicator.height);
             }
-        }
-
-        if (this.sayTimer > 0) {
-            ctx.font = "6pt Pixelmix";
-
-            var textWidth = ctx.measureText(this.sayText).width;
-
-            var textX = Math.round(this.posX + ((this.getWidth() / 2) - (textWidth / 2)));
-            var textY = this.posY - 10;
-
-            ctx.fillStyle = '#000';
-            ctx.fillText(this.sayText, textX - 1, textY - 1);
-            ctx.fillText(this.sayText, textX + 1, textY + 1);
-            ctx.fillStyle = '#fff';
-            ctx.fillText(this.sayText, textX, textY);
         }
     },
 
