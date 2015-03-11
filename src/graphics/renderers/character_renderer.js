@@ -24,6 +24,15 @@ var CharacterRenderer = Renderer.extend({
             var weapX = this.entity.getWidth() - this.entity.imgWeapon.width + 1;
             var weapY = this.entity.getHeight() - this.entity.imgWeapon.height - 10;
 
+            if (this.entity.isAttacking) {
+                var centerX = this.entity.getWidth() / 2;
+                var centerY = this.entity.getHeight() / 2;
+
+                ctx.translate(centerX, centerY);
+                ctx.rotate(this.entity.attackingAnimation * (Math.PI / 180));
+                ctx.translate(-centerX, -centerY);
+            }
+
             ctx.drawImage(this.entity.imgWeapon, 0, 0, this.entity.imgWeapon.width, this.entity.imgWeapon.height, weapX, weapY, this.entity.imgWeapon.width * this.scale, this.entity.imgWeapon.height * this.scale);
         }
     }

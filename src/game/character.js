@@ -84,7 +84,34 @@ var Character = Entity.extend({
     aiMoving: false,
     aiMovingTime: 0,
 
+    attackCooldown: 0,
+    isAttacking: false,
+    attackingAnimation: 0,
+
+    attack: function () {
+        if (this.attackCooldown > 0 || this.isAttacking) {
+            return;
+        }
+
+        this.isAttacking = true;
+        this.attackCooldown = 30;
+        this.attackingAnimation = 0;
+    },
+
     update: function () {
+        if (this.attackCooldown > 0) {
+            this.attackCooldown--;
+        }
+
+        if (this.isAttacking) {
+            this.attackingAnimation += 2;
+
+            if (this.attackingAnimation >= 30) {
+                this.attackingAnimation = 0;
+                this.isAttacking = false;
+            }
+        }
+
         if (this.drowning) {
             this.damage(2);
             this.renderer.scale *= 0.975;
@@ -136,6 +163,7 @@ var Character = Entity.extend({
                 // Random chance: turn around
                 if (chance.bool()) {
                     this.facingLeft = !this.facingLeft;
+                    this.attack();
                 }
 
                 // Random chance: start or stop walking
@@ -167,7 +195,7 @@ var Character = Entity.extend({
     die: function () {
         this._super();
 
-        this.say('Arrgh!');
+        this.say('Godverdomme!');
 
         if (this.drowning) {
             World.remove(this);
