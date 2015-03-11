@@ -102,6 +102,8 @@ var Character = Entity.extend({
 
                 AudioOut.playSfx('splash.wav', 1);
 
+                this.say('Help!');
+
                 Particles.emit({
                     srcX: this.posX + (this.getWidth() / 2),
                     srcY: this.posY + (this.getHeight() / 2),
@@ -163,6 +165,8 @@ var Character = Entity.extend({
 
     die: function () {
         this._super();
+
+        this.say('Arrgh!');
 
         if (this.drowning) {
             World.remove(this);
