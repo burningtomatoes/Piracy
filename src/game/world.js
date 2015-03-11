@@ -12,6 +12,9 @@ var World = {
 
     gravity: 0.2,
 
+    playerBoat: null,
+    enemyBoats: [],
+
     init: function () {
         this.imgClouds = Game.images.load('clouds.png');
 
@@ -22,9 +25,11 @@ var World = {
         this.entities = [];
         this.toRemove = [];
         this.player = null;
+        this.enemyBoats = [];
+        this.playerBoat = null;
 
-        var playerBoat = new Boat();
-        this.add(playerBoat);
+        this.playerBoat = new Boat();
+        this.add(this.playerBoat);
     },
 
     add: function (entity) {

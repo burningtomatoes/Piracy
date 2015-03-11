@@ -15,6 +15,10 @@ var Boat = Entity.extend({
         this.crew = [];
     },
 
+    isPlayerBoat: function () {
+        return this.doesFloat && World.playerBoat == this;
+    },
+
     generateCrew: function () {
         this.crew = [];
 
@@ -71,6 +75,10 @@ var Boat = Entity.extend({
             var pirateMatey = new Character();
             pirateMatey.posX = spawn.left + this.posX;
             pirateMatey.posY = spawn.top + this.posY;
+
+            if (i === 0 && this.isPlayerBoat()) {
+                World.player = pirateMatey;
+            }
 
             World.add(pirateMatey);
 
