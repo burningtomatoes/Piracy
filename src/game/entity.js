@@ -35,6 +35,8 @@ var Entity = Class.extend({
     sayText: '',
     sayTimer: 0,
 
+    damageFlashTimer: 0,
+
     init: function (id) {
         this.id = id;
         this.renderer = null;
@@ -129,6 +131,10 @@ var Entity = Class.extend({
             this.sayTimer--;
         }
 
+        if (this.damageFlashTimer > 0) {
+            this.damageFlashTimer--;
+        }
+
         if (this.velocityY > 0 && this.isFloating()) {
             this.velocityY = 0;
             this.floatToWater();
@@ -190,6 +196,8 @@ var Entity = Class.extend({
         if (this.health <= 0) {
             this.die();
         }
+
+        this.damageFlashTimer = 3;
     },
 
     die: function () {
@@ -329,7 +337,7 @@ var Entity = Class.extend({
 
         ctx.rect(baseRect.x + 1, baseRect.y + 1, (baseRect.w - 2) * healthPercentage, baseRect.h - 2);
 
-        ctx.fillStyle = '#DF0101';
+        ctx.fillStyle = this.damageFlashTimer > 0 ? '#fff' : '#DF0101';
         ctx.fill();
 
         ctx.closePath();
