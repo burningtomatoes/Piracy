@@ -15,10 +15,19 @@ var World = {
     playerBoat: null,
     enemyBoats: [],
 
-    init: function () {
-        this.imgClouds = Game.images.load('clouds.png');
+    inEncounter: false,
+    searchingEncounters: false,
 
+    initialized: false,
+
+    init: function () {
+        if (this.initialized) {
+            return;
+        }
+
+        this.imgClouds = Game.images.load('clouds.png');
         this.clear();
+        this.initialized = true;
     },
 
     clear: function () {
@@ -27,9 +36,21 @@ var World = {
         this.player = null;
         this.enemyBoats = [];
         this.playerBoat = null;
+        this.inEncounter = false;
+        this.searchingEncounters = false;
+    },
 
-        this.playerBoat = new Boat();
+    start: function () {
+        if (!this.initialized) {
+            this.init();
+        }
+
+        this.clear();
+
+        this.playerBoat = new Boat('cargo_ship_1', Math.round(Settings.TileSize * 1));
         this.add(this.playerBoat);
+
+        this.searchingEncounters = true;
     },
 
     add: function (entity) {
@@ -117,6 +138,44 @@ var World = {
                 maxAmount: 1
             });
         }
+
+        // Random encounters
+        if (!this.inEncounter && this.searchingEncounters && chance.bool({ likelihood: 1 })) {
+            this.generateEncounter();
+            this.announceEncounter();
+        }
+    },
+
+    generateEncounter: function () {
+        this.inEncounter = true;
+        this.enemyBoats = [];
+
+        var prefabTemplates = [
+            'medium_ship_1'
+        ];
+
+        var enemyBoatTemplate = chance.pick(prefabTemplates);
+        var enemyBoat = new Boat(enemyBoatTemplate, Canvas.canvas.width + Settings.TileSize);
+
+        console.info('[World] Generated encounter with boat ' + enemyBoatTemplate);
+
+        this.enemyBoats.push(enemyBoat);
+        this.add(enemyBoat);
+    },
+
+    announceEncounter: function () {
+        var announcers = this.playerBoat.crew;
+
+        for (var i = 0; i < announcers.length; i++) {
+            var shipmate = announcers[i];
+            shipmate.say('Ship ahoy!');
+
+            if (shipmate.isPlayer()) {
+                shipmate.say('Ready your swords!');
+            }
+        }
+
+        AudioOut.playSfx('ship_ahoy.wav', 0.75);
     },
 
     anyCollisions: function (ourEntity, ourRect) {

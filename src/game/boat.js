@@ -3,16 +3,18 @@ var Boat = Entity.extend({
     affectedByGravity: true,
     crew: [],
 
-    init: function () {
+    init: function (prefabTemplate, posX) {
         this._super();
 
-        this.renderer = Game.prefabs.load('cargo_ship_1.json');
+        this.renderer = Game.prefabs.load(prefabTemplate + '.json');
         this.renderer.onLoadComplete(function () {
             this.floatToWater();
             this.generateCrew();
         }.bind(this));
 
         this.crew = [];
+
+        this.posX = posX;
     },
 
     isPlayerBoat: function () {

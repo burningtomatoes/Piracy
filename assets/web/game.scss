@@ -192,6 +192,13 @@ button.form-control {
     line-height: 32px;
   }
 
+  .status {
+    font-size: 6pt * 2 !important;
+    position: fixed;
+    left: 15px;
+    bottom: 15px;
+  }
+
   .health {
     background: rgba(0, 0, 0, 0.5);
     padding: 10px;

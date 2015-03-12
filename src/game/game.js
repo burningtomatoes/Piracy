@@ -49,7 +49,7 @@ var Game = {
     start: function (mapId) {
         this.clear();
 
-        World.init();
+        World.start();
 
         BootLogo.show(function () {
             this.$game.stop().fadeIn('fast');
