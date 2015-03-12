@@ -332,8 +332,8 @@ var Entity = Class.extend({
 
             var textWidth = ctx.measureText(this.sayText).width;
 
-            var textX = Math.round(this.posX + ((this.getWidth() / 2) - (textWidth / 2)));
-            var textY = this.posY - 13;
+            var textX = Camera.translateX(Math.round(this.posX + ((this.getWidth() / 2) - (textWidth / 2))));
+            var textY = Camera.translateY(this.posY - 13);
 
             ctx.fillStyle = '#000';
             ctx.fillText(this.sayText, textX - 1, textY - 1);
@@ -354,7 +354,7 @@ var Entity = Class.extend({
             if (this.imgIndicator == null) {
                 this.imgIndicator = Game.images.load(this.isPlayer() ? 'captain.png' : 'enemy.png');
             } else {
-                ctx.drawImage(this.imgIndicator, 0, 0, this.imgIndicator.width, this.imgIndicator.height, this.posX + 5, this.posY - 35, this.imgIndicator.width, this.imgIndicator.height);
+                ctx.drawImage(this.imgIndicator, 0, 0, this.imgIndicator.width, this.imgIndicator.height,  Camera.translateX(this.posX + 5),  Camera.translateY(this.posY - 35), this.imgIndicator.width, this.imgIndicator.height);
             }
         }
     },
