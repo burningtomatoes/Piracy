@@ -242,6 +242,17 @@ var Entity = Class.extend({
         this.velocityX = 0;
     },
 
+    jump: function () {
+        this.velocityY -= this.jumpPower;
+
+        if (this.velocityY <= -this.jumpPower) {
+            this.velocityY = -this.jumpPower;
+        }
+
+        this.landed = false;
+        this.jumped = true;
+    },
+
     draw: function (ctx) {
         if (this.alpha <= 0) {
             return;

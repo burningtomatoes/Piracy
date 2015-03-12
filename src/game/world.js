@@ -168,10 +168,18 @@ var World = {
 
         for (var i = 0; i < announcers.length; i++) {
             var shipmate = announcers[i];
-            shipmate.say('Ship ahoy!');
 
             if (shipmate.isPlayer()) {
                 shipmate.say('Ready your swords!');
+            } else {
+                shipmate.say('Ship ahoy!');
+
+                if (chance.bool()) {
+                    shipmate.jump();
+                }
+
+                shipmate.velocityX = 0;
+                shipmate.facingLeft = false;
             }
         }
 
