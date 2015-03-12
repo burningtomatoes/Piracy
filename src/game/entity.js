@@ -333,7 +333,7 @@ var Entity = Class.extend({
             var textWidth = ctx.measureText(this.sayText).width;
 
             var textX = Math.round(this.posX + ((this.getWidth() / 2) - (textWidth / 2)));
-            var textY = this.posY - 10;
+            var textY = this.posY - 13;
 
             ctx.fillStyle = '#000';
             ctx.fillText(this.sayText, textX - 1, textY - 1);
@@ -364,7 +364,7 @@ var Entity = Class.extend({
 
         var baseRect = {
             x: Camera.translateX(this.posX + 4),
-            y: Camera.translateY(this.posY - 6),
+            y: Camera.translateY(this.posY - 10),
             w: this.getWidth() - 12,
             h: 4
         };
