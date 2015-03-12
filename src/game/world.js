@@ -17,6 +17,8 @@ var World = {
 
     inEncounter: false,
     searchingEncounters: false,
+    showingEncounter: false,
+    showingEncounterTimer: 0,
 
     initialized: false,
 
@@ -144,6 +146,22 @@ var World = {
             this.generateEncounter();
             this.announceEncounter();
         }
+
+        // Show encounter zone
+        if (this.showingEncounterTimer > 0) {
+            this.showingEncounterTimer--;
+
+            if (this.showingEncounterTimer == 0) {
+                if (this.showingEncounter) {
+                    Camera.x = 0;
+                    this.showingEncounter = false;
+                } else {
+                    Camera.x -= Canvas.canvas.width;
+                    this.showingEncounter = true;
+                    this.showingEncounterTimer = 120;
+                }
+            }
+        }
     },
 
     generateEncounter: function () {
@@ -184,6 +202,8 @@ var World = {
         }
 
         AudioOut.playSfx('ship_ahoy.wav', 0.75);
+
+        this.showingEncounterTimer = 60;
     },
 
     anyCollisions: function (ourEntity, ourRect) {
