@@ -189,7 +189,7 @@ var Character = Entity.extend({
                 }
 
                 // Random speech, sometimes
-                if (this.isFriendly() && chance.bool({ likelihood: 25 }) && this.sayTimer == 0 && this.landed) {
+                if (this.isFriendly() && chance.bool({ likelihood: 25 }) && this.sayTimer == 0 && this.landed && !World.inEncounter) {
                     this.say(chance.pick(this.randomSpeech));
                 }
 
