@@ -101,11 +101,18 @@ var Character = Entity.extend({
 
         for (var i = 0; i < entities.length; i++) {
             var entity = entities[i];
-            entity.damage(chance.integer({
-                min: this.weaponDamage - 5,
-                max: this.weaponDamage + 5
-            }));
+
+            if (this.canDamage(entity)) {
+                entity.damage(chance.integer({
+                    min: this.weaponDamage - 5,
+                    max: this.weaponDamage + 5
+                }));
+            }
         }
+    },
+
+    canDamage: function (entity) {
+        return (this.isFriendly() && entity.isEnemy()) || (this.isEnemy() && entity.isFriendly());
     },
 
     update: function () {
