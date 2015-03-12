@@ -65,6 +65,10 @@
          "height":16,
          "name":"Ladders",
          "opacity":1,
+         "properties":
+            {
+             "what":"ladder"
+            },
          "type":"tilelayer",
          "visible":true,
          "width":23,

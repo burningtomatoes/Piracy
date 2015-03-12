@@ -210,6 +210,24 @@ var World = {
         return false;
     },
 
+    anyLadders: function (ourRect) {
+        for (var i = 0; i < this.entities.length; i++) {
+            var entity = this.entities[i];
+
+            if (entity.renderer == null) {
+                continue;
+            }
+
+            if (entity.renderer.isPrefab) {
+                if (entity.renderer.isRectLadder(ourRect, entity.posX, entity.posY)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    },
+
     getCharactersInRect: function (ourRect, ourEntity) {
         var ents = [];
 

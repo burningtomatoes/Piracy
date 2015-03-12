@@ -417,7 +417,7 @@ var Entity = Class.extend({
 
         var projectedPosY = this.posY - (this.movementSpeed * 2);
         var projectedRect = this.getRect(null, projectedPosY);
-        return !World.anyCollisions(this, projectedRect);
+        return !World.anyCollisions(this, projectedRect) || World.anyLadders(projectedRect);
     },
 
     canMoveDown: function () {

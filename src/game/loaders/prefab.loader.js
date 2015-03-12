@@ -51,6 +51,7 @@ var PrefabLoader = Loader.extend({
                 var y = 0;
 
                 var isBlocking = layer.properties.blocked == '1';
+                var isLadder = layer.properties.what == 'ladder';
 
                 var layerDataLength = layer.data.length;
 
@@ -80,6 +81,10 @@ var PrefabLoader = Loader.extend({
 
                     if (isBlocking) {
                         prefab.blockedRects.push(rect);
+                    }
+
+                    if (isLadder) {
+                        prefab.ladderRects.push(rect);
                     }
                 }
             }

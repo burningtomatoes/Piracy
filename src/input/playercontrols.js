@@ -20,14 +20,19 @@ var PlayerControls = {
         }
 
         // MOVE //////////////////////////////////////////////////////////////////////////////////////////////////////
-        var keyMoveUp       = Keyboard.wasKeyPressed(KeyCode.W) || Keyboard.wasKeyPressed(KeyCode.UP);
+        var keyMoveUp       = Keyboard.isKeyDown(KeyCode.W) || Keyboard.isKeyDown(KeyCode.UP);
         var keyMoveLeft     = Keyboard.isKeyDown(KeyCode.A) || Keyboard.isKeyDown(KeyCode.LEFT);
         var keyMoveRight    = Keyboard.isKeyDown(KeyCode.D) || Keyboard.isKeyDown(KeyCode.RIGHT);
 
-        if (keyMoveUp && p.canMoveUp() && p.landed) {
-            p.jump();
+        if (keyMoveUp && p.canMoveUp()) {
+           var ladderMode = World.anyLadders(p.getRect());
 
-            AudioOut.playSfx('jump.wav', 0.75);
+            if (ladderMode) {
+                p.velocityY = -p.movementSpeed;
+            } else if (p.landed) {
+                p.jump();
+                AudioOut.playSfx('jump.wav', 0.75);
+            }
         }
 
         if (keyMoveLeft && p.canMoveLeft()) {

@@ -17,6 +17,7 @@ var Prefab = Class.extend({
     tilesPerRow: 0,
 
     blockedRects: [],
+    ladderRects: [],
 
     _onLoadComplete: null,
 
@@ -62,6 +63,27 @@ var Prefab = Class.extend({
 
         for (var i = 0; i < blockedRectsLength; i++) {
             var r = this.blockedRects[i];
+
+            var rectCopy = {
+                left:   r.left + adjustedX,
+                right:  r.right + adjustedX,
+                top:    r.top + adjustedY,
+                bottom: r.bottom + adjustedY
+            };
+
+            if (Utils.rectIntersects(ourRect, rectCopy)) {
+                return true;
+            }
+        }
+
+        return false;
+    },
+
+    isRectLadder: function (ourRect, adjustedX, adjustedY) {
+        var ladderRectsLength = this.ladderRects.length;
+
+        for (var i = 0; i < ladderRectsLength; i++) {
+            var r = this.ladderRects[i];
 
             var rectCopy = {
                 left:   r.left + adjustedX,
