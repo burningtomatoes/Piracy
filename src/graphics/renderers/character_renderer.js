@@ -2,6 +2,7 @@ var CharacterRenderer = Renderer.extend({
     imgBase: null,
     imgHead: null,
     imgBody: null,
+    imgHat: null,
 
     scale: 1,
 
@@ -11,6 +12,14 @@ var CharacterRenderer = Renderer.extend({
         this.imgBase = Game.images.load('body_base.png');
         this.imgHead = Game.images.load('head_' + head + '.png');
         this.imgBody = Game.images.load('body_' + body + '.png');
+        this.imgHat = null;
+    },
+
+    update: function () {
+        if (this.imgHat == null && this.entity.isPlayer()) {
+            console.log('have a hat, capt\'n');
+            this.imgHat = Game.images.load('captain_hat.png');
+        }
     },
 
     draw: function (ctx, posX, posY) {
@@ -19,6 +28,10 @@ var CharacterRenderer = Renderer.extend({
         ctx.drawImage(this.imgBase, 0, 0, this.imgBase.width, this.imgBase.height, 0, 0, this.imgBase.width * this.scale, this.imgBase.height * this.scale);
         ctx.drawImage(this.imgBody, 0, 0, this.imgBody.width, this.imgBody.height, 0, 0, this.imgBody.width * this.scale, this.imgBody.height * this.scale);
         ctx.drawImage(this.imgHead, 0, 0, this.imgHead.width, this.imgHead.height, (this.imgBody.width * this.scale / 2) - (this.imgHead.width * this.scale / 2), 0, this.imgHead.width * this.scale, this.imgHead.height * this.scale);
+
+        if (this.imgHat != null) {
+            ctx.drawImage(this.imgHat, 0, 0, this.imgHat.width, this.imgHat.height, Math.round((this.imgBody.width * this.scale / 2) - (this.imgHat.width * this.scale / 2)), -3, this.imgHat.width * this.scale, this.imgHat.height * this.scale);
+        }
 
         if (this.entity.hasWeapon && this.entity.imgWeapon) {
             var weapX = this.entity.getWidth() - this.entity.imgWeapon.width + 1;

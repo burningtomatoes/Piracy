@@ -39,7 +39,7 @@ var Character = Entity.extend({
     init: function () {
         this.renderer = new CharacterRenderer(
             this,
-            chance.integer({ min: 1, max: 7 }),
+            chance.integer({ min: 1, max: 8 }),
             chance.integer({ min: 1, max: 6 })
         );
 
