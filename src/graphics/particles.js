@@ -81,7 +81,7 @@ var Particle = Entity.extend({
 
         if (this.local) {
             posX = Camera.translateX(posX);
-            posY = Camera.translateX(posY);
+            posY = Camera.translateY(posY);
         }
 
         ctx.beginPath();
