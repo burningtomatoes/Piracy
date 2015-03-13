@@ -43,7 +43,7 @@ var Character = Entity.extend({
             chance.integer({ min: 1, max: 6 })
         );
 
-        this.equipWeapon('sword_basic', 15);
+        this.equipWeapon('sword_basic', 5);
     },
 
     equipWeapon: function (id, damage) {
@@ -56,14 +56,16 @@ var Character = Entity.extend({
 
     damage: function (d) {
         if (!this.drowning && !this.dead) {
-            Particles.emit({
-                srcX: this.posX + (this.getWidth() / 2),
-                srcY: this.posY + (this.getHeight() / 2),
-                minAmount: 1,
-                maxAmount: d,
-                color: '#ff0000',
-                lifetime: 60
-            });
+            if (d >= 1) {
+                Particles.emit({
+                    srcX: this.posX + (this.getWidth() / 2),
+                    srcY: this.posY + (this.getHeight() / 2),
+                    minAmount: 1,
+                    maxAmount: d,
+                    color: '#ff0000',
+                    lifetime: 60
+                });
+            }
         }
 
         if (this.isPlayer()) {
@@ -110,6 +112,7 @@ var Character = Entity.extend({
                 var totDist = distanceX + distanceY;
                 if (closestNumber > totDist) {
                     closestEntity = entity;
+                    closestNumber = totDist;
                 }
             }
         }
