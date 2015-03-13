@@ -35,7 +35,15 @@ var PlayerControls = {
             }
         }
 
+        if (keyMoveLeft) {
+            p.facingLeft = true;
+        } else if (keyMoveRight) {
+            p.facingLeft = false;
+        }
+
         if (keyMoveLeft && p.canMoveLeft()) {
+            p.facingLeft = true;
+
             p.velocityX -= p.movementSpeed;
 
             if (p.velocityX <= -p.movementSpeed) {
@@ -45,6 +53,8 @@ var PlayerControls = {
             didChange = true;
         }
         else if (keyMoveRight && p.canMoveRight()) {
+            p.facingLeft = false;
+
             p.velocityX += p.movementSpeed;
 
             if (p.velocityX >= p.movementSpeed) {

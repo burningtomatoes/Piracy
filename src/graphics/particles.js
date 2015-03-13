@@ -10,7 +10,8 @@ var Particles = {
             minSize: 2,
             maxSize: 5,
             intensity: 10,
-            gravity: true
+            gravity: true,
+            local: true
         };
 
         for (var prop in usrConfig) {
@@ -28,7 +29,7 @@ var Particles = {
                 max: config.maxSize
             });
 
-            var particle = new Particle(config.color, size, config.intensity, config.gravity);
+            var particle = new Particle(config.color, size, config.intensity, config.gravity, config.local);
             particle.posX = config.srcX;
             particle.posY = config.srcY;
             World.add(particle);
@@ -41,14 +42,16 @@ var Particle = Entity.extend({
     size: 0,
     reflective: false,
     gravity: true,
+    local: false,
 
-    init: function (color, size, intensity, gravity) {
+    init: function (color, size, intensity, gravity, local) {
         this.velocityX = chance.floating({min: -intensity, max: intensity});
         this.velocityY = chance.floating({min: -intensity, max: intensity});
         this.alpha = 1.0;
         this.color = color;
         this.size = size;
         this.gravity = gravity;
+        this.local = local;
     },
 
     getWidth: function () { return this.size; },
@@ -73,8 +76,16 @@ var Particle = Entity.extend({
     },
 
     draw: function (ctx) {
+        var posX = this.posX;
+        var posY = this.posY;
+
+        if (this.local) {
+            posX = Camera.translateX(posX);
+            posY = Camera.translateX(posY);
+        }
+
         ctx.beginPath();
-        ctx.rect(this.posX, this.posY, this.size, this.size);
+        ctx.rect(posX, posY, this.size, this.size);
         ctx.fillStyle = this.color;
         ctx.fill();
         ctx.closePath();

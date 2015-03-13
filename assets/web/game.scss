@@ -233,3 +233,36 @@ button.form-control {
     }
   }
 }
+
+.btn-board {
+  background: linear-gradient(to bottom,  rgba(252,234,187,1) 0%,rgba(252,205,77,1) 50%,rgba(248,181,0,1) 51%,rgba(251,223,147,1) 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fceabb', endColorstr='#fbdf93',GradientType=0 ); /* IE6-9 */
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  text-align: center;
+  padding: 15px;
+  border: 3px solid #fff;
+  border-radius: 4px;
+  font-size: 28px;
+  line-height: 32px;
+  opacity: 0.95;
+
+  &:hover {
+    background: linear-gradient(to bottom,  rgb(255, 237, 189) 0%, rgb(255, 208, 78) 50%, rgb(255, 187, 0) 51%, rgb(255, 227, 150) 100%); /* W3C */
+    cursor: pointer;
+    opacity: 1.0;
+  }
+
+  &:active {
+    box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.5);
+  }
+
+  img {
+    vertical-align: middle;
+    margin-top: 1px;
+    margin-right: 10px;
+    display: block;
+    float: left;
+  }
+}

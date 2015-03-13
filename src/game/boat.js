@@ -26,7 +26,6 @@ var Boat = Entity.extend({
 
         // 1. Prepare all available spawns
         var layers = this.renderer.layers;
-        console.log(layers);
         var availableSpawns = [];
 
         for (var i = 0; i < layers.length; i++) {

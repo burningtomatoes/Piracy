@@ -40,6 +40,8 @@ var World = {
         this.playerBoat = null;
         this.inEncounter = false;
         this.searchingEncounters = false;
+
+        $('#hud .btn-board').hide();
     },
 
     start: function () {
@@ -137,7 +139,8 @@ var World = {
                 intensity: 1,
                 gravity: false,
                 minAmount: 1,
-                maxAmount: 1
+                maxAmount: 1,
+                local: false
             });
         }
 
@@ -155,6 +158,13 @@ var World = {
                 if (this.showingEncounter) {
                     Camera.x = 0;
                     this.showingEncounter = false;
+
+                    $('#hud .btn-board')
+                        .show()
+                        .unbind('click')
+                        .bind('click', function () {
+                            this.boardEncounter();
+                        }.bind(this));
                 } else {
                     Camera.x -= Canvas.canvas.width;
                     this.showingEncounter = true;
@@ -162,11 +172,100 @@ var World = {
                 }
             }
         }
+
+        // Sumper jump to the boat
+        if (this.isSuperJumping) {
+            var announcers = this.playerBoat.crew;
+
+            var mvS = 0;
+
+            for (var i = 0; i < announcers.length; i++) {
+                var shipmate = announcers[i];
+
+                mvS = shipmate.movementSpeed;
+
+                shipmate.landed = true;
+                shipmate.jumped = false;
+                shipmate.receivesCollision = false;
+                shipmate.facingLeft = false;
+                shipmate.posX += mvS * 5;
+                shipmate.say("Yarrr!");
+
+                if (shipmate.posY <= -220) {
+                    this.isSuperLanding = true;
+                }
+
+                if (this.isSuperLanding) {
+                    shipmate.posY += mvS * 2;
+                } else {
+                    shipmate.posY -= mvS * 2;
+                }
+
+                var maxY = World.getWaterLevel() - 250;
+
+                if (shipmate.posY >= maxY) {
+                    shipmate.posY = maxY;
+                }
+
+                shipmate.velocityX = 0;
+                shipmate.velocityY = 0;
+                shipmate.attack();
+            }
+
+            Camera.x -= mvS * 5;
+
+            var maxCameraX = Canvas.canvas.width;
+
+            if (Camera.x <= -maxCameraX) {
+                this.isSuperJumping = false;
+                this.isSuperLanding = false;
+
+                for (var i = 0; i < announcers.length; i++) {
+                    var shipmate = announcers[i];
+                    shipmate.landed = false;
+                    shipmate.jumped = true;
+                    shipmate.receivesCollision = true;
+                    shipmate.velocityX = chance.integer({
+                        min: -shipmate.movementSpeed,
+                        max: shipmate.movementSpeed
+                    });
+                    shipmate.facingLeft = chance.bool();
+                    shipmate.unstuck();
+                }
+            }
+        }
+    },
+
+    isSuperJumping: false,
+    isSuperLanding: false,
+
+    boardEncounter: function () {
+        $('#hud .btn-board').hide();
+        AudioOut.playSfx('jump.wav');
+        this.isSuperJumping = true;
+        this.isSuperLanding = false;
+    },
+
+    endEncounter: function () {
+        this.inEncounter = false;
+        this.searchingEncounters = false;
+
+        for (var i = 0; i < this.enemyBoats.length; i++) {
+            var boat = this.enemyBoats[i];
+            this.remove(boat);
+        }
+
+        this.enemyBoats = [];
+
+        this.isSuperJumping = false;
+        this.isSuperLanding = false;
     },
 
     generateEncounter: function () {
         this.inEncounter = true;
         this.enemyBoats = [];
+        this.isSuperJumping = false;
+        this.isSuperLanding = false;
 
         var prefabTemplates = [
             'medium_ship_1'

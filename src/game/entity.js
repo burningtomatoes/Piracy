@@ -50,6 +50,13 @@ var Entity = Class.extend({
         this.healthMax = 100;
     },
 
+    unstuck: function () {
+        while (!this.canMoveAnywhere()) {
+            this.posX += chance.integer({ min: -3, max: 3 });
+            this.posY += chance.integer({ min: -3, max: 3 });
+        }
+    },
+
     say: function (text) {
         this.sayText = text;
         this.sayTimer = text.length * 30;
@@ -211,6 +218,8 @@ var Entity = Class.extend({
         if (this.renderer && this.renderer.update) {
             this.renderer.update();
         }
+
+        //this.unstuck();
     },
 
     damage: function (amt) {

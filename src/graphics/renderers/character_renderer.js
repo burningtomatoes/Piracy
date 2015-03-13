@@ -17,7 +17,6 @@ var CharacterRenderer = Renderer.extend({
 
     update: function () {
         if (this.imgHat == null && this.entity.isPlayer()) {
-            console.log('have a hat, capt\'n');
             this.imgHat = Game.images.load('captain_hat.png');
         }
     },
