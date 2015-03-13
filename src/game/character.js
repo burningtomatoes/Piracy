@@ -88,6 +88,35 @@ var Character = Entity.extend({
     isAttacking: false,
     attackingAnimation: 0,
 
+    attackingEntity: null,
+
+    getEnemyInRange: function () {
+        var entities = World.entities.slice();
+
+        var closestNumber = 9999;
+        var closestEntity = null;
+
+        for (var i = 0; i < entities.length; i++) {
+            var entity = entities[i];
+
+            if (entity === this || entity.dead || !entity.isCharacter || !this.canDamage(entity)) {
+                continue;
+            }
+
+            var distanceX = Math.abs(this.posX - entity.posX);
+            var distanceY = Math.abs(this.posY - entity.posY);
+
+            if (distanceX <= 128 && distanceY <= 32) {
+                var totDist = distanceX + distanceY;
+                if (closestNumber > totDist) {
+                    closestEntity = entity;
+                }
+            }
+        }
+
+        return closestEntity;
+    },
+
     attack: function () {
         if (this.attackCooldown > 0 || this.isAttacking) {
             return;
@@ -112,6 +141,10 @@ var Character = Entity.extend({
     },
 
     canDamage: function (entity) {
+        if (entity.dead) {
+            return false;
+        }
+
         return (this.isFriendly() && entity.isEnemy()) || (this.isEnemy() && entity.isFriendly());
     },
 
@@ -174,6 +207,47 @@ var Character = Entity.extend({
                 this.velocityX = 0;
             }
 
+            if (World.inEncounter) {
+                if (this.attackingEntity != null) {
+                    if (this.attackingEntity.dead) {
+                        this.say("See you in hell!");
+                        this.attackingEntity = null;
+                    } else {
+                        this.say("seeking!!");
+                        this.facingLeft = (this.attackingEntity.posX < this.posX);
+
+                        var blockedSideways = (this.facingLeft && !this.canMoveLeft()) || (!this.facingLeft && !this.canMoveRight());
+
+                        if ((this.attackingEntity.posY > this.posY || blockedSideways) && !this.jumped) {
+                            this.jump();
+                        }
+
+                        var dist = Math.abs(this.posX - this.attackingEntity.posX);
+
+                        if (dist <= 48) {
+                            this.attack();
+                        }
+
+                        if (dist >= 32 || blockedSideways) {
+                            if (this.facingLeft) {
+                                this.velocityX = -this.movementSpeed;
+                            } else {
+                                this.velocityX = +this.movementSpeed;
+                            }
+                        }
+
+                        if (chance.bool() && !this.jumped) {
+                            this.jump();
+                        }
+                    }
+                } else {
+                    this.say("idle");
+
+                    // Seek a target
+                    this.attackingEntity = this.getEnemyInRange();
+                }
+            }
+
             if (this.aiTimer > 0) {
                 this.aiTimer--;
             } else {
@@ -205,6 +279,10 @@ var Character = Entity.extend({
                     min: 60,
                     max: 600
                 });
+
+                if (World.inEncounter) {
+                    this.aiTimer /= 2;
+                }
             }
         }
     },
