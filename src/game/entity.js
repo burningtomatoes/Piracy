@@ -16,6 +16,7 @@ var Entity = Class.extend({
     health: 100,
     healthMax: 100,
     name: '???',
+    regenTimer: 0,
 
     movementSpeed: 2.5,
     jumpPower: 5,
@@ -160,6 +161,18 @@ var Entity = Class.extend({
                 World.remove(this);
                 return;
             }
+        } else {
+            if (this.regenTimer > 0) {
+                this.regenTimer--;
+            } else {
+                this.health += 1;
+
+                if (this.health > this.healthMax) {
+                    this.health = this.healthMax;
+                }
+
+                this.regenTimer = 10;
+            }
         }
 
         if (this.sayTimer > 0) {
@@ -237,6 +250,7 @@ var Entity = Class.extend({
         }
 
         this.damageFlashTimer = 3;
+        this.regenTimer = 200;
     },
 
     die: function () {
