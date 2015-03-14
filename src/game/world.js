@@ -145,7 +145,7 @@ var World = {
         }
 
         // Random encounters
-        if (!this.inEncounter && this.searchingEncounters && chance.bool({ likelihood: 1 })) {
+        if (!this.inEncounter && this.searchingEncounters && chance.bool({ likelihood: 0.1 })) {
             this.generateEncounter();
             this.announceEncounter();
         }
