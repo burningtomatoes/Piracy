@@ -46,6 +46,8 @@ var Game = {
         this.goldPieces = 0;
         this.wins = 0;
 
+        Camera.x = 0;
+
         $('#hud').hide();
 
         this.syncHud();
