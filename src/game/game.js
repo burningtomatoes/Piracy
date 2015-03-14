@@ -120,7 +120,7 @@ var Game = {
 
         if (!this.isGameOver) {
             PlayerControls.update();
-        } else if (Keyboard.wasKeyPressed(KeyCode.SPACE)) {
+        } else if (Keyboard.wasKeyPressed(KeyCode.ENTER) || Keyboard.wasKeyPressed(KeyCode.RETURN)) {
             $('#gameover').hide();
             Game.isGameOver = false;
             location.reload();
