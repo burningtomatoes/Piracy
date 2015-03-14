@@ -46,7 +46,7 @@ var Game = {
         this.syncHud();
     },
 
-    start: function (mapId) {
+    start: function () {
         this.clear();
 
         World.start();
@@ -123,7 +123,7 @@ var Game = {
         } else if (Keyboard.wasKeyPressed(KeyCode.ENTER) || Keyboard.wasKeyPressed(KeyCode.RETURN)) {
             $('#gameover').hide();
             Game.isGameOver = false;
-            location.reload();
+            this.start();
         }
 
         Keyboard.update();
