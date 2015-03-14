@@ -3,6 +3,9 @@ var Boat = Entity.extend({
     affectedByGravity: true,
     crew: [],
 
+    PLAYER_CREW_COUNT: 8,
+    ENEMY_CREW_COUNT: 6,
+
     init: function (prefabTemplate, posX) {
         this._super();
 
@@ -102,7 +105,8 @@ var Boat = Entity.extend({
         availableSpawns = chance.shuffle(availableSpawns);
 
         // 3. Begin spawning folks
-        for (var i = 0; i < 8; i++) {
+        var amtToSpawn = this.isPlayerBoat() ? this.PLAYER_CREW_COUNT : this.ENEMY_CREW_COUNT;
+        for (var i = 0; i < amtToSpawn; i++) {
             var spawn = availableSpawns[i];
 
             var pirateMatey = new Character();
