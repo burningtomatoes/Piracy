@@ -278,6 +278,12 @@ var World = {
 
         this.enemyBoats.push(enemyBoat);
         this.add(enemyBoat);
+
+        for (var i = 0; i < enemyBoat.crew.length; i++) {
+            var shipmate = enemyBoat.crew[i];
+            shipmate.movementSpeed = 2.0;
+            // enemies move slower than friendlies
+        }
     },
 
     announceEncounter: function () {
@@ -309,7 +315,7 @@ var World = {
         for (var i = 0; i < this.entities.length; i++) {
             var entity = this.entities[i];
 
-            if (entity.renderer == null || entity === ourEntity || entity.dead) {
+            if (entity.renderer == null || entity === ourEntity || entity.dead || !entity.causesCollision) {
                 continue;
             }
 

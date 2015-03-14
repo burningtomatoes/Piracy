@@ -11,6 +11,7 @@ var Entity = Class.extend({
     doesFloat: true,
     affectedByGravity: true,
     receivesCollision: true,
+    causesCollision: true,
 
     health: 100,
     healthMax: 100,
@@ -301,7 +302,7 @@ var Entity = Class.extend({
 
             // Debug boundary
             ctx.beginPath();
-            ctx.rect(r.left, r.top, r.width, r.height);
+            ctx.rect(Camera.translateX(r.left), Camera.translateY(r.top), r.width, r.height);
             ctx.strokeStyle = "#FFCCAA";
             ctx.stroke();
             ctx.closePath();
@@ -310,7 +311,7 @@ var Entity = Class.extend({
 
             // Debug boundary
             ctx.beginPath();
-            ctx.rect(r.left, r.top, r.width, r.height);
+            ctx.rect(Camera.translateX(r.left), Camera.translateY(r.top), r.width, r.height);
             ctx.strokeStyle = "#FF0000";
             ctx.stroke();
             ctx.closePath();

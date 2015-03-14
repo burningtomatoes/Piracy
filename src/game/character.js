@@ -297,6 +297,11 @@ var Character = Entity.extend({
 
         if (this.drowning) {
             World.remove(this);
+        } else {
+            if (!this.isPlayer() && this.isEnemy()) {
+                var coin = new Coin(chance.integer({ min: 1, max: 10 }), this.posX, this.posY);
+                World.add(coin);
+            }
         }
 
         if (this.isPlayer() && !Game.isGameOver) {
