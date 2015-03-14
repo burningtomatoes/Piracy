@@ -258,7 +258,7 @@ var Character = Entity.extend({
                         }
 
                         if (!this.isKnockingBack) {
-                            if (dist >= 32 || blockedSideways || targetIsBelow) {
+                            if (dist >= 32 || blockedSideways || targetIsBelow || targetIsAbove) {
                                 if (this.facingLeft) {
                                     this.velocityX = -this.movementSpeed;
                                 } else {
