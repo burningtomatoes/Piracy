@@ -59,6 +59,10 @@ var Coin = Entity.extend({
                 return;
             }
         }
+
+        if (this.isFloating()) {
+            World.remove(this);
+        }
     },
 
     draw: function (ctx) {

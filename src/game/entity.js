@@ -68,7 +68,7 @@ var Entity = Class.extend({
     },
 
     isWalking: function () {
-        return this.velocityX != 0 && this.landed;
+        return this.velocityX != 0 && this.landed && !this.isKnockingBack;
     },
 
     isPlayer: function () {
@@ -183,10 +183,12 @@ var Entity = Class.extend({
             this.velocityX = 0;
         }
 
-        if (this.velocityX > 0) {
-            this.facingLeft = false;
-        } else if (this.velocityX < 0) {
-            this.facingLeft = true;
+        if (!this.isKnockingBack) {
+            if (this.velocityX > 0) {
+                this.facingLeft = false;
+            } else if (this.velocityX < 0) {
+                this.facingLeft = true;
+            }
         }
 
         this.landed = !this.canMoveDown();

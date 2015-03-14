@@ -121,12 +121,12 @@ var Character = Entity.extend({
     },
 
     attack: function () {
-        if (this.attackCooldown > 0 || this.isAttacking) {
+        if (this.attackCooldown > 0 || this.isAttacking || this.isKnockingBack) {
             return;
         }
 
         this.isAttacking = true;
-        this.attackCooldown = 10;
+        this.attackCooldown = 12;
         this.attackingAnimation = 0;
 
         var entities = World.getCharactersInRect(this.getAttackRect(), this);
@@ -139,8 +139,20 @@ var Character = Entity.extend({
                     min: this.weaponDamage - 5,
                     max: this.weaponDamage + 5
                 }));
+                entity.knockBack(this);
             }
         }
+    },
+
+    isKnockingBack: false,
+
+    knockBack: function (source) {
+        this.isKnockingBack = true;
+        this.velocityX = source.facingLeft ? -3 : 3;
+        if (this.landed) {
+            this.velocityY = -1.5;
+        }
+        this.facingLeft = !source.facingLeft;
     },
 
     canDamage: function (entity) {
@@ -162,6 +174,15 @@ var Character = Entity.extend({
             if (this.attackingAnimation >= 40) {
                 this.attackingAnimation = 0;
                 this.isAttacking = false;
+            }
+        }
+
+        if (this.isKnockingBack) {
+            this.velocityX = MathHelper.lerp(this.velocityX, 0, 0.05);
+
+            if (Math.abs(this.velocityX) <= 0.1) {
+                this.isKnockingBack = false;
+                this.velocityX = 0;
             }
         }
 
@@ -227,20 +248,24 @@ var Character = Entity.extend({
                         var dist = Math.abs(this.posX - this.attackingEntity.posX);
 
                         if (dist <= 48) {
-                            this.attack();
-                        }
-
-                        if (dist >= 32 || blockedSideways) {
-                            if (this.facingLeft) {
-                                this.velocityX = -this.movementSpeed;
+                            if (chance.bool({ likelihood: 25 }) && !this.jumped) {
+                                this.jump();
                             } else {
-                                this.velocityX = +this.movementSpeed;
+                                this.attack();
                             }
                         }
 
-                        if (chance.bool() && !this.jumped) {
-                            this.jump();
+                        if (!this.isKnockingBack) {
+                            if (dist >= 32 || blockedSideways) {
+                                if (this.facingLeft) {
+                                    this.velocityX = -this.movementSpeed;
+                                } else {
+                                    this.velocityX = +this.movementSpeed;
+                                }
+                            }
                         }
+
+
                     }
                 } else {
                     // Seek a target

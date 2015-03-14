@@ -281,7 +281,7 @@ var World = {
 
         for (var i = 0; i < enemyBoat.crew.length; i++) {
             var shipmate = enemyBoat.crew[i];
-            shipmate.movementSpeed = 2.0;
+            shipmate.movementSpeed = 1.0;
             // enemies move slower than friendlies
         }
     },

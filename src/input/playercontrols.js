@@ -64,7 +64,7 @@ var PlayerControls = {
             didChange = true;
         }
         else {
-            if (p.velocityX != null) {
+            if (p.velocityX != null && !p.isKnockingBack) {
                 p.velocityX = 0;
                 didChange = true;
             }
