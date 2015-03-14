@@ -1,6 +1,5 @@
 var Coin = Entity.extend({
     value: null,
-    imgCoin: null,
 
     causesCollision: false,
     receivesCollision: true,
@@ -8,29 +7,13 @@ var Coin = Entity.extend({
     init: function (value, pX, pY) {
         this.value = value;
 
-        this.imgCoin = Game.images.load('goldpc.png');
-
         this.posX = pX;
         this.posY = pY;
 
         this.velocityX = chance.floating({ min: -10, max: 10 });
         this.velocityY = chance.floating({ min: 3, max: 16 });
-    },
 
-    getHeight: function () {
-        if (this.imgCoin == null) {
-            return 0;
-        }
-
-        return this.imgCoin.height;
-    },
-
-    getWidth: function () {
-        if (this.imgCoin == null) {
-            return 0;
-        }
-
-        return this.imgCoin.width;
+        this.renderer = new CoinRenderer();
     },
 
     update: function () {
@@ -51,6 +34,6 @@ var Coin = Entity.extend({
     },
 
     draw: function (ctx) {
-        ctx.drawImage(this.imgCoin, 0, 0, this.imgCoin.width, this.imgCoin.height, Camera.translateX(this.posX), Camera.translateY(this.posY), this.imgCoin.width, this.imgCoin.height);
+        this._super(ctx);
     }
 });
