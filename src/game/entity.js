@@ -53,10 +53,38 @@ var Entity = Class.extend({
     },
 
     unstuck: function () {
-        while (!this.canMoveAnywhere()) {
+        while (this.isStuck()) {
             this.posX += chance.integer({ min: -3, max: 3 });
             this.posY += chance.integer({ min: -3, max: 3 });
         }
+    },
+
+    isStuck: function () {
+        if (!this.canMoveAnywhere()) {
+            return true;
+        }
+
+        var oldVx = this.velocityX;
+        var oldVy = this.velocityY;
+
+        this.velocityX = 0;
+        this.velocityY = 0;
+
+        var mvBlocks = 0;
+
+        this.velocityX = this.movementSpeed;
+        if (!this.canMoveRight()) { mvBlocks++; }
+
+        this.velocityX = -this.movementSpeed;
+        if (!this.canMoveLeft()) { mvBlocks++; }
+
+        if (mvBlocks >= 2) {
+            this.velocityX = oldVx;
+            this.velocityY = oldVy;
+            return true;
+        }
+
+        return false;
     },
 
     say: function (text) {
@@ -205,6 +233,10 @@ var Entity = Class.extend({
         }
 
         this.landed = !this.canMoveDown();
+
+        if (this.landed) {
+            this.isKnockingBack = false;
+        }
 
         this.posX += this.velocityX;
         this.posY += this.velocityY;
