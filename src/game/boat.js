@@ -84,6 +84,10 @@ var Boat = Entity.extend({
                 pirateMatey.equipWeapon('sword_gold', 25);
             }
 
+            if (!this.isPlayerBoat()) {
+                pirateMatey.movementSpeed = 2.0;
+            }
+
             World.add(pirateMatey);
 
             this.crew.push(pirateMatey);

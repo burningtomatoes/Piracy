@@ -278,12 +278,6 @@ var World = {
 
         this.enemyBoats.push(enemyBoat);
         this.add(enemyBoat);
-
-        for (var i = 0; i < enemyBoat.crew.length; i++) {
-            var shipmate = enemyBoat.crew[i];
-            shipmate.movementSpeed = 1.0;
-            // enemies move slower than friendlies
-        }
     },
 
     announceEncounter: function () {
