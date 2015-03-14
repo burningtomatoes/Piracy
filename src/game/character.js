@@ -108,7 +108,7 @@ var Character = Entity.extend({
             var distanceX = Math.abs(this.posX - entity.posX);
             var distanceY = Math.abs(this.posY - entity.posY);
 
-            if (distanceX <= 128 && distanceY <= 32) {
+            if (distanceX <= 200 && distanceY <= 32) {
                 var totDist = distanceX + distanceY;
                 if (closestNumber > totDist) {
                     closestEntity = entity;
@@ -216,7 +216,6 @@ var Character = Entity.extend({
                         this.say("See you in hell!");
                         this.attackingEntity = null;
                     } else {
-                        this.say("seeking!!");
                         this.facingLeft = (this.attackingEntity.posX < this.posX);
 
                         var blockedSideways = (this.facingLeft && !this.canMoveLeft()) || (!this.facingLeft && !this.canMoveRight());
@@ -244,8 +243,6 @@ var Character = Entity.extend({
                         }
                     }
                 } else {
-                    this.say("idle");
-
                     // Seek a target
                     this.attackingEntity = this.getEnemyInRange();
                 }
