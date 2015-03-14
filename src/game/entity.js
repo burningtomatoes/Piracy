@@ -456,7 +456,7 @@ var Entity = Class.extend({
             return false;
         }
 
-        var projectedPosX = this.posX - this.velocityX;
+        var projectedPosX = this.posX + this.velocityX;
         var projectedRect = this.getRect(projectedPosX, null);
         return World.anyCollisions(this, projectedRect);
     },
