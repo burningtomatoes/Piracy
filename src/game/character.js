@@ -240,8 +240,10 @@ var Character = Entity.extend({
                         this.facingLeft = (this.attackingEntity.posX < this.posX);
 
                         var blockedSideways = (this.facingLeft && !this.canMoveLeft()) || (!this.facingLeft && !this.canMoveRight());
+                        var targetIsBelow = this.attackingEntity.posY > this.posY;
+                        var targetIsAbove = this.attackingEntity.posY < this.posY;
 
-                        if ((this.attackingEntity.posY > this.posY || blockedSideways) && !this.jumped) {
+                        if ((targetIsAbove || blockedSideways) && !this.jumped) {
                             this.jump();
                         }
 
@@ -256,7 +258,7 @@ var Character = Entity.extend({
                         }
 
                         if (!this.isKnockingBack) {
-                            if (dist >= 32 || blockedSideways) {
+                            if (dist >= 32 || blockedSideways || targetIsBelow) {
                                 if (this.facingLeft) {
                                     this.velocityX = -this.movementSpeed;
                                 } else {
