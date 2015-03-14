@@ -11,9 +11,37 @@ var Coin = Entity.extend({
         this.posY = pY;
 
         this.velocityX = chance.floating({ min: -10, max: 10 });
-        this.velocityY = chance.floating({ min: 3, max: 16 });
+        this.velocityY = chance.floating({ min: -5, max: -1 });
 
         this.renderer = new CoinRenderer();
+    },
+
+    getRect: function (overrideX, overrideY) {
+        var x = this.posX;
+        var y = this.posY;
+
+        if (overrideX != null) {
+            x = overrideX;
+        }
+
+        if (overrideY != null) {
+            y = overrideY;
+        }
+
+        var w = this.getWidth();
+        var h = this.getHeight();
+
+        var margin = 2;
+
+        var rect = {
+            left: x,
+            top: y,
+            height: h - margin,
+            width: w - margin
+        };
+        rect.bottom = rect.top + rect.height;
+        rect.right = rect.left + rect.width;
+        return rect;
     },
 
     update: function () {
