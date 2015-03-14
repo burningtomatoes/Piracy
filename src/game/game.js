@@ -46,15 +46,17 @@ var Game = {
         this.goldPieces = 0;
         this.wins = 0;
 
+        $('#hud').hide();
+
         this.syncHud();
     },
 
     start: function () {
         this.clear();
 
-        World.start();
-
         BootLogo.show(function () {
+            World.start();
+            $('#hud').show();
             this.$game.stop().fadeIn('fast');
         }.bind(this));
     },
