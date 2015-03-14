@@ -331,5 +331,9 @@ var Character = Entity.extend({
         if (this.isPlayer() && !Game.isGameOver) {
             Game.gameOver();
         }
+
+        if (this.isEnemy() && this.boat.getCrewAlive() == 0) {
+            World.endEncounter();
+        }
     }
 });

@@ -250,17 +250,55 @@ var World = {
         this.inEncounter = false;
         this.searchingEncounters = false;
 
-        for (var i = 0; i < this.enemyBoats.length; i++) {
-            var boat = this.enemyBoats[i];
-            this.remove(boat);
-        }
+        $('#game').stop().fadeOut('fast', function () {
+            this.inEncounter = false;
+            this.searchingEncounters = false;
 
-        this.enemyBoats = [];
+            this.playerBoat.resetCrewPositions();
 
-        this.isSuperJumping = false;
-        this.isSuperLanding = false;
+            Camera.x = 0;
+
+            for (var i = 0; i < this.enemyBoats.length; i++) {
+                var boat = this.enemyBoats[i];
+
+                for (var j = 0; j < boat.crew.length; j++) {
+                    var crewMember = boat.crew[j];
+                    crewMember.dead = true;
+                    this.remove(crewMember);
+                }
+
+                boat.crew = [];
+
+                this.remove(boat);
+            }
+
+            for (var i = 0; i < this.entities.length; i++) {
+                var entity = this.entities[i];
+
+                if (entity.isEnemy()) {
+                    entity.dead = true;
+                    this.remove(entity);
+                }
+            }
+
+            this.enemyBoats = [];
+
+            this.isSuperJumping = false;
+            this.isSuperLanding = false;
+
+            $('#game').stop().fadeIn('fast', function () {
+                if (!this.player.dead) {
+                    this.searchingEncounters = true;
+                }
+            }.bind(this));
+        }.bind(this));
+
+        $('#hud .btn-board').hide();
 
         Game.syncHud();
+
+        this.showingEncounter = false;
+        this.showingEncounterTimer = 0;
     },
 
     generateEncounter: function () {

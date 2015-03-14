@@ -1,14 +1,4 @@
 var PrefabLoader = Loader.extend({
-    readCache: function (id, defaultValue) {
-        var data = this._super(id, defaultValue);
-
-        if (data.isPrefab) {
-            data.onLoadComplete();
-        }
-
-        return data;
-    },
-
     innerLoad: function (filename) {
         var prefab = new Prefab();
 
@@ -94,15 +84,9 @@ var PrefabLoader = Loader.extend({
         .success(function(data) {
             configurePrefab(data);
             prefab.fullyLoaded = true;
-
-            if (prefab.onLoadComplete) {
-                prefab.onLoadComplete();
-            }
         })
-        .error(function() {
-            if (prefab.onLoadComplete) {
-                prefab.onLoadComplete();
-            }
+        .error(function(a, b, c) {
+            console.error('[PrefabLoader] Network load error! ', a, b, c);
         });
 
         return prefab;

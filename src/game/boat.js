@@ -2,6 +2,7 @@ var Boat = Entity.extend({
     doesFloat: true,
     affectedByGravity: true,
     crew: [],
+    waitingForLoad: false,
 
     PLAYER_CREW_COUNT: 8,
     ENEMY_CREW_COUNT: 6,
@@ -10,10 +11,7 @@ var Boat = Entity.extend({
         this._super();
 
         this.renderer = Game.prefabs.load(prefabTemplate + '.json');
-        this.renderer.onLoadComplete(function () {
-            this.floatToWater();
-            this.generateCrew();
-        }.bind(this));
+        this.waitingForLoad = true;
 
         this.crew = [];
 
@@ -56,10 +54,38 @@ var Boat = Entity.extend({
         return this.doesFloat && World.playerBoat == this;
     },
 
-    generateCrew: function () {
-        this.crew = [];
+    resetCrewPositions: function () {
+        var availableSpawns = this.prepareSpawns();
 
-        // 1. Prepare all available spawns
+        for (var i = 0; i < this.crew.length; i++) {
+            var spawn = availableSpawns[i];
+            var pirateMatey = this.crew[i];
+
+            pirateMatey.posX = spawn.left + this.posX;
+            pirateMatey.posY = spawn.top + this.posY;
+            pirateMatey.aiMoving = false;
+            pirateMatey.attackingEntity = null;
+            pirateMatey.facingLeft = chance.bool();
+            pirateMatey.velocityX = 0;
+            pirateMatey.velocityY = 0;
+            pirateMatey.aiTimer = chance.integer({min: 0, max: 600});
+            pirateMatey.boat = this;
+        }
+
+        Game.syncHud();
+    },
+
+    update: function () {
+        if (this.waitingForLoad && this.renderer != null && this.renderer.fullyLoaded) {
+            this.floatToWater();
+            this.generateCrew();
+
+            this.waitingForLoad = false;
+        }
+    },
+
+    prepareSpawns: function() {
+        // 1. Prepare all available spawns based on map layer data
         var layers = this.renderer.layers;
         var availableSpawns = [];
 
@@ -103,6 +129,16 @@ var Boat = Entity.extend({
 
         // 2. Shuffle the spawn array
         availableSpawns = chance.shuffle(availableSpawns);
+
+        return availableSpawns;
+    },
+
+    generateCrew: function () {
+        console.log('generating crew for ', this);
+
+        this.crew = [];
+
+        var availableSpawns = this.prepareSpawns();
 
         // 3. Begin spawning folks
         var amtToSpawn = this.isPlayerBoat() ? this.PLAYER_CREW_COUNT : this.ENEMY_CREW_COUNT;

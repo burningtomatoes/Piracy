@@ -19,25 +19,6 @@ var Prefab = Class.extend({
     blockedRects: [],
     ladderRects: [],
 
-    _onLoadComplete: null,
-
-    onLoadComplete: function (fn) {
-        if (fn && fn != null) {
-            // Set mode
-            this._onLoadComplete = fn;
-
-            // Already fully loaded? trigger now
-            if (this.fullyLoaded) {
-                this.onLoadComplete();
-            }
-        } else {
-            // Trigger mode
-            if (this._onLoadComplete != null) {
-                this._onLoadComplete();
-            }
-        }
-    },
-
     init: function (id) {
         this.id = id;
         this.data = { };
