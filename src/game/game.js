@@ -71,7 +71,29 @@ var Game = {
 
     syncHud: function () {
         var $hud = $('#hud');
+
         var $goldInciatro = $hud.find('.gold span');
+        var $frInciatro = $hud.find('.friendlies span');
+        var $enInciatro = $hud.find('.enemies span');
+
+        var friendlyBoat = World.playerBoat;
+
+        if (friendlyBoat != null) {
+            $frInciatro.text(friendlyBoat.getCrewAlive() + '/' + friendlyBoat.getCrewTotal());
+            $frInciatro.parent().show();
+        } else {
+            $frInciatro.parent().hide();
+        }
+
+        var enemyBoat = World.inEncounter ? World.enemyBoats[0] : null;
+
+        if (enemyBoat != null && enemyBoat.crew.length > 0) {
+            $enInciatro.text(enemyBoat.getCrewAlive() + '/' + enemyBoat.getCrewTotal());
+            $enInciatro.parent().show();
+        } else {
+            $enInciatro.parent().hide();
+        }
+
         $goldInciatro.text(this.goldPieces + 'G');
     },
 

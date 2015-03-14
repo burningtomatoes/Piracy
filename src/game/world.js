@@ -259,6 +259,8 @@ var World = {
 
         this.isSuperJumping = false;
         this.isSuperLanding = false;
+
+        Game.syncHud();
     },
 
     generateEncounter: function () {
@@ -303,6 +305,8 @@ var World = {
         AudioOut.playSfx('ship_ahoy.wav', 0.75);
 
         this.showingEncounterTimer = 60;
+
+        Game.syncHud();
     },
 
     anyCollisions: function (ourEntity, ourRect) {

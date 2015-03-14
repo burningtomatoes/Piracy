@@ -182,7 +182,7 @@ button.form-control {
   color: #fff;
   text-shadow: 1px 1px 1px #000, -1px -1px 1px #888;
 
-  .gold {
+  .gold, .friendlies, .enemies {
     img {
       display: block;
       float: left;
@@ -190,6 +190,7 @@ button.form-control {
     }
 
     line-height: 32px;
+    margin-bottom: 10px;
   }
 
   .status {

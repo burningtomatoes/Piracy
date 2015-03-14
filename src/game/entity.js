@@ -252,6 +252,8 @@ var Entity = Class.extend({
         this.dead = true;
 
         this.velocityX = 0;
+
+        Game.syncHud();
     },
 
     jump: function () {
@@ -362,13 +364,25 @@ var Entity = Class.extend({
             this.drawHealthBar(ctx);
         }
 
-        if (this.isPlayer() || this.isEnemy()) {
+        if (this.isCharacter) {
             if (this.imgIndicator == null) {
-                this.imgIndicator = Game.images.load(this.isPlayer() ? 'captain.png' : 'enemy.png');
+                this.imgIndicator = Game.images.load(this.determineIndicator() + '.png');
             } else {
                 ctx.drawImage(this.imgIndicator, 0, 0, this.imgIndicator.width, this.imgIndicator.height,  Camera.translateX(this.posX + 5),  Camera.translateY(this.posY - 35), this.imgIndicator.width, this.imgIndicator.height);
             }
         }
+    },
+
+    determineIndicator: function () {
+        if (this.isPlayer()) {
+            return 'captain';
+        }
+
+        if (this.isEnemy()) {
+            return 'enemy';
+        }
+
+        return 'friendly';
     },
 
     drawHealthBar: function (ctx) {

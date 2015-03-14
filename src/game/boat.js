@@ -17,6 +17,38 @@ var Boat = Entity.extend({
         this.posX = posX;
     },
 
+    getCrewAlive: function () {
+        var t = 0;
+
+        for (var i = 0; i < this.crew.length; i++) {
+            var mate = this.crew[i];
+
+            if (!mate.dead) {
+                t++;
+            }
+        }
+
+        return t;
+    },
+
+    getCrewDead: function () {
+        var t = 0;
+
+        for (var i = 0; i < this.crew.length; i++) {
+            var mate = this.crew[i];
+
+            if (mate.dead) {
+                t++;
+            }
+        }
+
+        return t;
+    },
+
+    getCrewTotal: function () {
+        return this.crew.length;
+    },
+
     isPlayerBoat: function () {
         return this.doesFloat && World.playerBoat == this;
     },
@@ -92,5 +124,7 @@ var Boat = Entity.extend({
 
             this.crew.push(pirateMatey);
         }
+
+        Game.syncHud();
     }
 });
