@@ -16,6 +16,8 @@ var Game = {
 
     goldPieces: 0,
 
+    wins: 0,
+
     init: function () {
         if (this.initialized) {
             return;
@@ -42,6 +44,7 @@ var Game = {
         this.map = null;
         this.isGameOver = false;
         this.goldPieces = 0;
+        this.wins = 0;
 
         this.syncHud();
     },
@@ -106,7 +109,7 @@ var Game = {
     },
 
     gameOver: function () {
-        $('#gameover').slideDown();
+        $('#gameover').slideDown().find('.wins').text(this.wins);
         this.isGameOver = true;
     },
 

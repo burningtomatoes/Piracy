@@ -249,6 +249,7 @@ var World = {
     endEncounter: function () {
         this.inEncounter = false;
         this.searchingEncounters = false;
+        Game.wins++;
 
         $('#game').stop().fadeOut('fast', function () {
             this.inEncounter = false;
